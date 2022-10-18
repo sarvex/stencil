@@ -706,6 +706,9 @@ export interface CompilerCtx {
   rollupCacheHydrate: any;
   rollupCacheLazy: any;
   rollupCacheNative: any;
+  /**
+   * A collection of all style mode names
+   */
   styleModeNames: Set<string>;
   changedModules: Set<string>;
   changedFiles: Set<string>;
@@ -746,6 +749,9 @@ export interface ComponentCompilerFeatures {
   hasListenerTargetParent: boolean;
   hasMember: boolean;
   hasMethod: boolean;
+  /**
+   * `true` if a component has a style mode defined for it other than the default one. `false` otherwise.
+   */
   hasMode: boolean;
   hasProp: boolean;
   hasPropBoolean: boolean;
@@ -755,6 +761,9 @@ export interface ComponentCompilerFeatures {
   hasReflect: boolean;
   hasRenderFn: boolean;
   hasState: boolean;
+  /**
+   * `true` if a component has any styles associated with it. `false` otherwise.
+   */
   hasStyle: boolean;
   hasVdomAttribute: boolean;
   hasVdomClass: boolean;
