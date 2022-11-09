@@ -1,5 +1,6 @@
-import { hasError, isFunction, shouldIgnoreError } from '@utils';
+import { hasError, isBoolean, isFunction, shouldIgnoreError } from '@utils';
 
+import { DEFAULT_DEV_MODE, DEFAULT_FS_NAMESPACE, DEFAULT_HASHED_FILENAME_LENTH, DEFAULT_NAMESPACE } from '../compiler/config/constants';
 import { createLogger } from '../compiler/sys/logger/console-logger';
 import type * as d from '../declarations';
 import { ValidatedConfig } from '../declarations';
@@ -117,6 +118,17 @@ export const runTask = async (
   const logger = config.logger ?? createLogger();
   const rootDir = config.rootDir ?? '/';
   const configSys = sys ?? config.sys ?? coreCompiler.createSystem({ logger });
+
+  let devMode = config.devMode ?? DEFAULT_DEV_MODE;
+  // default devMode false
+  if (config.flags?.prod) {
+    devMode = false;
+  } else if (config.flags?.dev) {
+    devMode = true;
+  } else if (!isBoolean(config.devMode)) {
+    devMode = DEFAULT_DEV_MODE;
+  }
+
   const strictConfig: ValidatedConfig = {
     ...config,
     flags: createConfigFlags(config.flags ?? { task }),
@@ -128,6 +140,14 @@ export const runTask = async (
     sys: configSys,
     testing: config.testing ?? {},
     transformAliasedImportPaths: config.transformAliasedImportPaths ?? false,
+    namespace: config.namespace ?? DEFAULT_NAMESPACE,
+    fsNamespace: config.fsNamespace ?? DEFAULT_FS_NAMESPACE,
+    minifyJs: config.minifyJs ?? !devMode,
+    minifyCss: config.minifyCss ?? !devMode,
+    hashFileNames: config.hashFileNames ?? !devMode,
+    hashedFileNameLength: config.hashedFileNameLength ?? DEFAULT_HASHED_FILENAME_LENTH,
+    buildEs5: config.buildEs5 === true || (!devMode && config.buildEs5 === 'prod'),
+    type: 'valid',
   };
 
   switch (task) {
