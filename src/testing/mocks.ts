@@ -34,7 +34,6 @@ export function mockValidatedConfig(overrides: Partial<ValidatedConfig> = {}): V
 
   return {
     ...baseConfig,
-    type: 'valid',
     flags: createConfigFlags(),
     hydratedFlag: null,
     logger: mockLogger(),
