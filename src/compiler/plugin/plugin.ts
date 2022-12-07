@@ -184,13 +184,22 @@ export const runPluginTransforms = async (
   return transformResults;
 };
 
+/**
+ *
+ * @param config the Stencil compiler configuration used for this build
+ * @param compilerCtx the current compiler context
+ * @param buildCtx the current build context
+ * @param code
+ * @param id
+ * @returns
+ */
 export const runPluginTransformsEsmImports = async (
   config: d.Config,
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx,
   code: string,
   id: string
-) => {
+): Promise<PluginTransformResults> => {
   const pluginCtx: PluginCtx = {
     config: config,
     sys: config.sys,

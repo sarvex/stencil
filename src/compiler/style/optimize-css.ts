@@ -10,18 +10,23 @@ export const optimizeCss = async (
   styleText: string,
   filePath: string
 ) => {
+  console.log(`optimizeCss::Gonna optimize ${styleText}`);
   if (typeof styleText !== 'string' || !styleText.length) {
+    console.log(`JK invalid data`)
     //  don't bother with invalid data
     return styleText;
   }
 
   if ((config.autoprefixCss === false || config.autoprefixCss === null) && !config.minifyCss) {
     // don't wanna autoprefix or minify, so just skip this
+    console.log(`optimizeCss::JK no minify`)
     return styleText;
   }
 
   if (typeof filePath === 'string') {
+    console.log(`optimizeCss::normalized ${filePath}`);
     filePath = normalizePath(filePath);
+    console.log(`optimizeCss::to ${filePath}`)
   }
 
   const opts: d.OptimizeCssInput = {
@@ -35,10 +40,12 @@ export const optimizeCss = async (
   const cachedContent = await compilerCtx.cache.get(cacheKey);
   if (cachedContent != null) {
     // let's use the cached data we already figured out
+    console.log(`optimizeCss::cached content found: ${cachedContent}`)
     return cachedContent;
   }
 
   const minifyResults = await compilerCtx.worker!.optimizeCss(opts);
+  console.log(`optimizeCss::results: ${minifyResults.output}`);
   minifyResults.diagnostics.forEach((d) => {
     // collect up any diagnostics from minifying
     diagnostics.push(d);
