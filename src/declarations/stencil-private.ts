@@ -1442,6 +1442,10 @@ export interface Plugin {
   ) => Promise<PluginTransformResults> | PluginTransformResults | string;
 }
 
+
+/**
+ * The results of running a Stencil plugin against a piece of code
+ */
 export interface PluginTransformResults {
   code?: string;
   map?: string;

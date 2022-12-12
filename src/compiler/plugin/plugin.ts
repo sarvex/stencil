@@ -185,12 +185,25 @@ export const runPluginTransforms = async (
 };
 
 /**
+ * Transform the imports found in the CSS/Sass/etc. files to ESM style imports
  *
+ * @example
+ * ```
+ * @import "./accordion.scss";
+ * @import "../item/item.ios.vars";
+ *
+ * // iOS Accordion
+ * // --------------------------------------------------
+ *
+ * :host(.accordion-next) ::slotted(ion-item[slot="header"]) {
+ *   --border-width: #{$item-ios-border-bottom-width 0px $item-ios-border-bottom-width 0px};
+ * }
+ *```
  * @param config the Stencil compiler configuration used for this build
  * @param compilerCtx the current compiler context
  * @param buildCtx the current build context
- * @param code
- * @param id
+ * @param code the stringified CSS (or CSS superset, such as Sass) whose imports should be transformed
+ * @param id the path to the CSS/Sass file on disk
  * @returns
  */
 export const runPluginTransformsEsmImports = async (
@@ -249,7 +262,7 @@ export const runPluginTransformsEsmImports = async (
               }
               if (isString(pluginTransformResults.id)) {
                 transformResults.id = pluginTransformResults.id;
-              }
+              } // the dependencies _may_ have been generated, in part or in whole, by the plugin. add new entries to the results dependencies list.
               if (Array.isArray(pluginTransformResults.dependencies)) {
                 const imports = pluginTransformResults.dependencies.filter(
                   (f) => !transformResults.dependencies.includes(f)
@@ -287,6 +300,6 @@ export const runPluginTransformsEsmImports = async (
       transformResults.dependencies.push(...imports);
     }
   }
-
+//TODO(NOW):STOP
   return transformResults;
 };

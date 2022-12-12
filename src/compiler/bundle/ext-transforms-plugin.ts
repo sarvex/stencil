@@ -42,6 +42,7 @@ export const extTransformsPlugin = (
     async transform(_, id) {
       console.log(`ext-transforms-plugin::transform - ${id}`);
       if (/\0/.test(id)) {
+        console.log(`ext-transforms-plugin::transform - ${id} - return null`);
         return null;
       }
 
@@ -56,6 +57,7 @@ export const extTransformsPlugin = (
         const filePath = normalizeFsPath(id);
         const code = await compilerCtx.fs.readFile(filePath);
         if (typeof code !== 'string') {
+          console.log(`ext-transforms-plugin::transform - code not string for - ${id} - return null`);
           return null;
         }
 

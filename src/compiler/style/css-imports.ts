@@ -8,14 +8,14 @@ import { getModuleId } from '../sys/resolve/resolve-utils';
 import { stripCssComments } from './style-utils';
 
 /**
- * Parse CSS imports into an object which contains a manifest of imports and a
+ * Parse CSS imports in CSS/Sass/etc. into an object which contains a manifest of imports and a
  * stylesheet with all imports resolved and concatenated.
  *
  * @param config the current config
  * @param compilerCtx the compiler context (we need filesystem access)
  * @param buildCtx the build context, we'll need access to diagnostics
- * @param srcFilePath the source filepath
- * @param resolvedFilePath the resolved filepath
+ * @param srcFilePath the source filepath containing the `styleText`
+ * @param resolvedFilePath the resolved filepath containing the `styleText`
  * @param styleText style text we start with
  * @param styleDocs optional array of style document objects
  * @returns an object with concatenated styleText and imports
@@ -52,7 +52,7 @@ export const parseCssImports = async (
    *
    * @param srcFilePath the source filepath
    * @param resolvedFilePath the resolved filepath
-   * @param styleText style text we start with*
+   * @param styleText style text we start with
    * @returns concatenated styles assembled from the various imported stylesheets
    */
   async function resolveAndFlattenImports(
