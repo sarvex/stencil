@@ -39,9 +39,12 @@ export const typescriptPlugin = (compilerCtx: d.CompilerCtx, bundleOpts: BundleO
 
           const sourceMap: d.SourceMap = JSON.parse(module.sourceMapFileText);
           sourceMap.sources = sourceMap.sources.map((src) => basename(src));
+          console.log(`typescript-plugin::load - return ${module.staticSourceFile}`);
+
           return { code: module.staticSourceFileText, map: sourceMap };
         }
       }
+      console.log(`typescript-plugin::load - return nil`);
       return null;
     },
     /**
@@ -64,6 +67,7 @@ export const typescriptPlugin = (compilerCtx: d.CompilerCtx, bundleOpts: BundleO
             transformers: { before: bundleOpts.customTransformers },
           });
           const sourceMap: d.SourceMap = tsResult.sourceMapText ? JSON.parse(tsResult.sourceMapText) : null;
+          console.log(`typescript-plugin::transform - return ${tsResult.outputText}`);
           return { code: tsResult.outputText, map: sourceMap };
         }
       }
