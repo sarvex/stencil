@@ -4,7 +4,7 @@ import { basename, relative } from 'path';
 import type * as d from '../../declarations';
 import { PluginCtx, PluginTransformResults } from '../../declarations';
 import { isOutputTargetDocs } from '../output-targets/output-utils';
-import {parseCssImports} from '../style/css-imports';
+import { parseCssImports } from '../style/css-imports';
 
 export const runPluginResolveId = async (pluginCtx: PluginCtx, importee: string) => {
   for (const plugin of pluginCtx.config.plugins) {
@@ -148,7 +148,8 @@ export const runPluginTransforms = async (
 
   buildCtx.diagnostics.push(...pluginCtx.diagnostics);
 
-  if (!isRawCssFile) { // TODO(NOW): I don't believe this is true anymore
+  if (!isRawCssFile) {
+    // TODO(NOW): I don't believe this is true anymore
     // sass precompiler just ran and converted @import "my.css" into @import url("my.css")
     // because of the ".css" extension. Sass did NOT concat the ".css" files into the output
     // but only updated it to use url() instead. Let's go ahead and concat the url() css
@@ -248,7 +249,7 @@ export const runPluginTransformsEsmImports = async (
   }
 
   // @ts-ignore
-  const unused = await parseCssImports(config, compilerCtx, buildCtx, id, id, transformResults.code);
+  // const unused = await parseCssImports(config, compilerCtx, buildCtx, id, id, transformResults.code);
   for (const plugin of pluginCtx.config.plugins) {
     if (isFunction(plugin.transform)) {
       try {
@@ -289,7 +290,7 @@ export const runPluginTransformsEsmImports = async (
   transformResults.diagnostics.push(...pluginCtx.diagnostics);
 
   // @ts-ignore
-  const unused2 = await parseCssImports(config, compilerCtx, buildCtx, id, id, transformResults.code);
+  // const unused2 = await parseCssImports(config, compilerCtx, buildCtx, id, id, transformResults.code);
   if (!isRawCssFile) {
     // precompilers just ran and converted @import "my.css" into @import url("my.css")
     // because of the ".css" extension. Precompilers did NOT concat the ".css" files into

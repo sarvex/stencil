@@ -8,7 +8,8 @@ describe('css-to-esm', () => {
     beforeEach(() => {
       // TODO(NOW): Stub
       transformCssToEsmInput = {
-        input: ':host {\n' +
+        input:
+          ':host {\n' +
           '  display: block;\n' +
           '  position: relative;\n' +
           '  width: 100%;\n' +
@@ -89,7 +90,6 @@ describe('css-to-esm', () => {
         minify: false,
         // ???? IDK when this isn't set? Need to trace. Perhaps for an import of a CSS file?
         tag: 'my-component',
-
       };
     });
 

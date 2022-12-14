@@ -25,11 +25,11 @@ export const updateStyleImports = (
 };
 
 /**
- * Add it!
- * @param transformOpts
- * @param tsSourceFile
- * @param moduleFile
- * @returns
+ * Add or update the provided TypeScript source file with ESM-style imports for the CSS, Sass, etc. styles for a component.
+ * @param transformOpts the transform options for the current compilation pass
+ * @param tsSourceFile the TypeScript source file that is performing the import of the CSS file
+ * @param moduleFile the metadata for the module containing the component being compiled
+ * @returns an updated TypeScript source file containing new/updated imports for CSS used within the component
  */
 const updateEsmStyleImports = (
   transformOpts: d.TransformOptions,
@@ -43,10 +43,12 @@ const updateEsmStyleImports = (
   moduleFile.cmps.forEach((cmp) => {
     cmp.styles.forEach((style) => {
       if (typeof style.styleIdentifier === 'string') {
-        updateSourceFile = true;
+        updateSourceFile = true; // TODO: How is this >1? Hmmmmmm
         if (style.externalStyles.length > 0) {
           // add style imports built from @Component() styleUrl option
           styleImports.push(createEsmStyleImport(transformOpts, tsSourceFile, cmp, style));
+          // const subImports = [];
+          // styleImports.push(...subImports);
         } else {
           // update existing esm import of a style identifier
           statements = updateEsmStyleImportPath(transformOpts, tsSourceFile, statements, cmp, style);

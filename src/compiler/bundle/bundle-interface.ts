@@ -18,6 +18,9 @@ export interface BundleOptions {
    */
   externalRuntime?: boolean;
   platform: 'client' | 'hydrate' | 'worker';
+  /**
+   * Custom TypeScript transformations that should occur to the source code at compile-time
+   */
   customTransformers?: TransformerFactory<SourceFile>[];
   /**
    * This is equivalent to the Rollup `input` configuration option. It's

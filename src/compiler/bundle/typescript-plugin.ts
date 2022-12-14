@@ -27,7 +27,14 @@ export const typescriptPlugin = (compilerCtx: d.CompilerCtx, bundleOpts: BundleO
      */
     load(id: string): LoadResult {
       console.log(`typescript-plugin::load - ${id}`);
-
+      //   static get originalStyleUrls() { return {
+      //     "ios": ["accordion.ios.scss"],
+      //     "md": ["accordion.md.scss"]
+      //   }; }
+      //   static get styleUrls() { return {
+      //     "ios": ["accordion.ios.css"],
+      //     "md": ["accordion.md.css"]
+      //   }; }
       if (isAbsolute(id)) {
         const fsFilePath = normalizeFsPath(id);
         const module = getModule(compilerCtx, fsFilePath);
