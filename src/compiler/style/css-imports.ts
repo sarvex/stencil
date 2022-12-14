@@ -15,7 +15,7 @@ import { stripCssComments } from './style-utils';
  * @param compilerCtx the compiler context (we need filesystem access)
  * @param buildCtx the build context, we'll need access to diagnostics
  * @param srcFilePath the source filepath containing the `styleText`
- * @param resolvedFilePath the resolved filepath containing the `styleText`
+ * @param resolvedFilePath the fully resolved filepath containing the `styleText`
  * @param styleText style text we start with
  * @param styleDocs optional array of style document objects
  * @returns an object with concatenated styleText and imports
@@ -222,6 +222,7 @@ export const getCssImports = async (
 
   return imports;
 };
+
 /**
  * Determine if Stencil should resolve a style sheet from `node_modules`.
  *
