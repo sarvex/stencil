@@ -53,7 +53,7 @@ export const styleToStatic = (newMembers: ts.ClassElement[], componentOptions: d
     newMembers.push(createStaticGetter('originalStyleUrls', originalStyleUrls));
     // normalize the various style urls to use ".css" as an extension, for later use by the compiler.
     // if a project uses standard CSS, it is possible that the generated intermediate representation matches the one
-    // generated immediately before this one
+    // generated immediately before this one - we allow this duplication so that we can access the "correct" url in a consistent way further in the pipeline
     const normalizedStyleExt = normalizeExtension(styleUrls);
     const normalizedStyleExp = convertValueToLiteral(normalizedStyleExt);
     newMembers.push(createStaticGetter('styleUrls', normalizedStyleExp));

@@ -54,8 +54,10 @@ export class MyComponent {
           ts.ScriptKind.TSX
         );
 
+        // @ts-ignore
         moduleFile = mockModule({
           cmps: [
+            // @ts-ignore
             {
               tagName: 'my-component',
               componentClassName: 'MyComponent',

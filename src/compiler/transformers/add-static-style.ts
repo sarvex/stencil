@@ -58,12 +58,12 @@ export const addStaticStylePropertyToClass = (styleStatements: ts.Statement[], c
   }
 };
 
-// TODO(NOW): 2x check these
 /**
  * Get a representation of a style from a component.
  *
  * A representation can take on different forms:
- * - An identifier (e.g. something that has been imported by name: `import styles from './styles.css';`
+ * - An identifier (e.g. something that has been imported by name: `import styles from './styles.css';`, where 'styles'
+ *   is the identifier)
  * - A string (e.g. "overflow: hidden");
  * - An object literal (e.g. `{"$": ["overflow: hidden"]}`
  * @param cmp the component to get the styles from

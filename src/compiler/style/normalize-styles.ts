@@ -29,6 +29,8 @@ export const normalizeStyles = (tagName: string, componentFilePath: string, styl
     if (Array.isArray(style.externalStyles)) {
       style.externalStyles.forEach((externalStyle) => {
         normalizeExternalStyle(componentFilePath, externalStyle);
+        // TODO(NOW):This is where i'd like to peek just to prototype
+        externalStyle.absolutePath
       });
     }
   });
