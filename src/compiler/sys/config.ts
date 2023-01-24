@@ -1,7 +1,8 @@
 import { join } from 'path';
 
+import { isBoolean } from '@utils';
+
 import { createConfigFlags } from '../../cli/config-flags';
-import {isBoolean} from '@utils';
 import type * as d from '../../declarations';
 import {
   DEFAULT_DEV_MODE,
