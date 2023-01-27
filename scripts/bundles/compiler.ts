@@ -66,6 +66,7 @@ export async function compiler(opts: BuildOptions) {
   const rollupWatchPath = join(opts.nodeModulesDir, 'rollup', 'dist', 'es', 'shared', 'watch.js');
   const compilerBundle: RollupOptions = {
     input: join(inputDir, 'index.js'),
+    external: ["fs", "path", "os", "crypto", "module", "util", "assert", "process", "events"],
     output: {
       format: 'cjs',
       file: join(opts.output.compilerDir, compilerFileName),
@@ -159,7 +160,7 @@ export async function compiler(opts: BuildOptions) {
       aliasPlugin(opts),
       rollupNodeResolve({
         mainFields: ['module', 'main'],
-        preferBuiltins: false,
+        preferBuiltins: true,
       }),
       rollupCommonjs({
         transformMixedEsModules: false,
