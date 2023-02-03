@@ -1,6 +1,6 @@
 import { loadTypeScriptDiagnostics, normalizePath } from '@utils';
 import { basename, join, relative } from 'path';
-import type ts from 'typescript';
+import ts from 'typescript';
 
 import type * as d from '../../declarations';
 import { updateComponentBuildConditionals } from '../app-core/app-data';
@@ -21,6 +21,7 @@ export const runTsProgram = async (
   const tsSyntactic = loadTypeScriptDiagnostics(tsBuilder.getSyntacticDiagnostics());
   const tsGlobal = loadTypeScriptDiagnostics(tsBuilder.getGlobalDiagnostics());
   const tsOptions = loadTypeScriptDiagnostics(tsBuilder.getOptionsDiagnostics());
+
   buildCtx.diagnostics.push(...tsSyntactic);
   buildCtx.diagnostics.push(...tsGlobal);
   buildCtx.diagnostics.push(...tsOptions);
@@ -49,6 +50,23 @@ export const runTsProgram = async (
       });
     }
   };
+
+
+  // Retrieve the semantic diagnostics prior to emit. There are cases where our usage of the TypeScript API can cause
+  // diagnostics to be created for a JSDoc `@link` entity:
+  // ```
+  // /**
+  //  * Some comment
+  //  * {@link https://www.ionic.io}
+  //  */
+  //  export class MyComponent { ... }
+  //  ```
+  // Diagnostic: Identifier 'https' could not be found
+  //
+  // Store these semantic diagnostics in their TypeScript form (as opposed to converting them to Stencil's
+  // representation like we do above) so that we can deduplicate them after emit.
+  // const semanticDiagnostics = ts.getPreEmitDiagnostics(tsProgram)
+  // console.log(JSON.stringify(semanticDiagnostics,null, 4));
 
   // Emit files that changed
   tsBuilder.emit(undefined, emitCallback, undefined, false, {
