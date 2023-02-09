@@ -65,7 +65,7 @@ export const getRollupOptions = (
   ]);
   const nodeResolvePlugin = rollupNodeResolvePlugin({
     mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
-    customResolveOptions,
+    // customResolveOptions,
     browser: true,
     rootDir: config.rootDir,
     ...(config.nodeResolve as any),
