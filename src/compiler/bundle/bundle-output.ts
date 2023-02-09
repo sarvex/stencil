@@ -63,6 +63,7 @@ export const getRollupOptions = (
     '.json',
     '.d.ts',
   ]);
+
   const nodeResolvePlugin = rollupNodeResolvePlugin({
     mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
     // customResolveOptions,
@@ -70,12 +71,34 @@ export const getRollupOptions = (
     rootDir: config.rootDir,
     ...(config.nodeResolve as any),
   });
+
   const orgNodeResolveId = nodeResolvePlugin.resolveId;
+
   const orgNodeResolveId2 = (nodeResolvePlugin.resolveId = async function (importee: string, importer: string) {
+    // importee = "mymodule?somequerystring";
     const [realImportee, query] = importee.split('?');
-    const resolved = await orgNodeResolveId.call(nodeResolvePlugin, realImportee, importer);
+
+    // 'ionicons', query = ''
+
+    let resolved: any;
+    try {
+      resolved = await orgNodeResolveId.call(nodeResolvePlugin, realImportee, importer);
+    } catch(e) {
+      console.log('oh no! orgNodeResolveId2 had some issue :/');
+      console.log(e);
+    }
+
+    if (!resolved) {
+      console.log('had some issue resolving');
+      console.log(`nodeResolvePlugin::resolveId::importee::`, importee);
+      console.log(`nodeResolvePlugin::resolveId::importer::`, importer);
+    }
+
     if (resolved) {
+      console.log("we're in the resolved block, wow!");
+      console.log(`nodeResolvePlugin::resolveId::resolved::`, resolved);
       if (isString(resolved)) {
+        // path/to/mymodule?somequerystring (if query is truthy)
         return query ? resolved + '?' + query : resolved;
       }
       return {
@@ -85,6 +108,7 @@ export const getRollupOptions = (
     }
     return resolved;
   });
+
   if (config.devServer && config.devServer.experimentalDevModules) {
     nodeResolvePlugin.resolveId = async function (importee: string, importer: string) {
       const resolvedId = await orgNodeResolveId2.call(nodeResolvePlugin, importee, importer);
