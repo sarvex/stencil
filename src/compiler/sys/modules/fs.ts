@@ -178,4 +178,8 @@ export const writeFile = (fs.writeFile = (p: string, data: string, opts: any, cb
     });
 });
 
+export const access = (fs.access = (p: string, _mode: any, cb: any) => {
+  fs.__sys.access(p).then(cb);
+});
+
 export default fs;
