@@ -16,6 +16,8 @@ export const inspect = (...args: any[]) => args.forEach((arg) => console.log(arg
 
 export const promisify = (fn: Function): (() => Promise<any>) => {
   if (typeof (fn as any)[promisify.custom] === 'function') {
+    console.trace('were doing something custom!');
+    console.log('with function::', fn.toString());
     // https://nodejs.org/api/util.html#util_custom_promisified_functions
     return function (...args: any[]) {
       return (fn as any)[promisify.custom].apply(this, args);
@@ -31,6 +33,9 @@ export const promisify = (fn: Function): (() => Promise<any>) => {
           resolve(result);
         }
       });
+      console.trace('im about to this');
+      console.log(this);
+
       fn.apply(this, args);
     });
   };
