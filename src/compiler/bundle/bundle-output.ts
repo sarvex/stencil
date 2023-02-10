@@ -1,5 +1,6 @@
 import { rollupCommonjsPlugin, rollupJsonPlugin, rollupNodeResolvePlugin, rollupReplacePlugin } from '@compiler-deps';
 import { createOnWarnFn, isString, loadRollupDiagnostics } from '@utils';
+import path from 'path';
 import { rollup, RollupOptions, TreeshakingOptions } from 'rollup';
 
 import type * as d from '../../declarations';
@@ -77,21 +78,38 @@ export const getRollupOptions = (
   const orgNodeResolveId2 = (nodeResolvePlugin.resolveId = async function (importee: string, importer: string) {
     // importee = "mymodule?somequerystring";
     const [realImportee, query] = importee.split('?');
+    const [realImporter, query2] = importer.split('?');
 
     // 'ionicons', query = ''
 
-    let resolved: any;
-    try {
-      resolved = await orgNodeResolveId.call(nodeResolvePlugin, realImportee, importer);
-    } catch(e) {
-      console.log('oh no! orgNodeResolveId2 had some issue :/');
-      console.log(e);
-    }
+
+    // let resolved: any;
+    // try {
+    //   resolved = await orgNodeResolveId.call(nodeResolvePlugin, realImportee, importer);
+    // } catch(e) {
+    //   console.log('oh no! orgNodeResolveId2 had some issue :/');
+    //   console.log(e);
+    // }
+
+    const tempResolvePlugin = rollupNodeResolvePlugin({
+      mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
+      extensions: ['.js', '.tsx', '.ts', '.mjs', '.json', '.d.ts'],
+      preferBuiltins: false,
+      browser: true,
+      moduleDirectories: ['node_modules', path.dirname(importer)],
+    });
+
+    const resolved = await tempResolvePlugin.resolveId.call(
+      tempResolvePlugin,
+      realImportee,
+      realImporter,
+      {}
+    );
 
     if (!resolved) {
-      console.log('had some issue resolving');
-      console.log(`nodeResolvePlugin::resolveId::importee::`, importee);
-      console.log(`nodeResolvePlugin::resolveId::importer::`, importer);
+      // console.log('had some issue resolving');
+      // console.log(`nodeResolvePlugin::resolveId::importee::`, importee);
+      // console.log(`nodeResolvePlugin::resolveId::importer::`, importer);
     }
 
     if (resolved) {
