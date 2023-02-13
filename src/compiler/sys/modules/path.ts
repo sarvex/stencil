@@ -55,4 +55,22 @@ export const setPlatformPath = (platformPath: d.PlatformPath) => {
 
 setPlatformPath(IS_NODE_ENV ? requireFunc('path') : pathBrowserify);
 
-export default path;
+const pathProxyHandler = {
+  has(
+  get(target: any, prop: any, receiver: any) {
+    if (target[prop]) {
+      console.log(`accessing ${prop} on path module`)
+      return target[prop]
+    } else {
+      console.error(`tried to access ${prop} on path module!!`)
+      console.log(`tried to access ${prop} on path module!!`)
+    }
+  }
+}
+
+const pathProxy = new Proxy(
+  path,
+  pathProxyHandler
+);
+
+export default pathProxy;
