@@ -56,7 +56,6 @@ export const setPlatformPath = (platformPath: d.PlatformPath) => {
 setPlatformPath(IS_NODE_ENV ? requireFunc('path') : pathBrowserify);
 
 const pathProxyHandler = {
-  has(
   get(target: any, prop: any, receiver: any) {
     if (target[prop]) {
       console.log(`accessing ${prop} on path module`)

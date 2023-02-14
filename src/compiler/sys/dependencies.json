@@ -107,7 +107,7 @@
     {
       "name": "rollup",
       "version": "__VERSION:ROLLUP__",
-      "main": "dist/es/rollup.browser.js"
+      "main": "dist/rollup.js"
     },
     {
       "name": "terser",

@@ -83,7 +83,7 @@ export async function compiler(opts: BuildOptions) {
     },
     plugins: [
       typescriptSourcePlugin(opts),
-      terserPlugin(opts),
+      // terserPlugin(opts),
       {
         name: 'compilerMockDocResolvePlugin',
         /**
@@ -172,17 +172,17 @@ export async function compiler(opts: BuildOptions) {
       rollupJson({
         preferConst: true,
       }),
-      {
-        name: 'compilerMinify',
-        async generateBundle(_, bundleFiles) {
-          if (opts.isProd) {
-            const compilerFilename = Object.keys(bundleFiles).find((f) => f.includes('stencil'));
-            const compilerBundle = bundleFiles[compilerFilename] as OutputChunk;
-            const minified = await minifyStencilCompiler(compilerBundle.code, opts);
-            await fs.writeFile(join(opts.output.compilerDir, compilerFilename.replace('.js', '.min.js')), minified);
-          }
-        },
-      },
+      // {
+      //   name: 'compilerMinify',
+      //   async generateBundle(_, bundleFiles) {
+      //     if (opts.isProd) {
+      //       const compilerFilename = Object.keys(bundleFiles).find((f) => f.includes('stencil'));
+      //       const compilerBundle = bundleFiles[compilerFilename] as OutputChunk;
+      //       const minified = await minifyStencilCompiler(compilerBundle.code, opts);
+      //       await fs.writeFile(join(opts.output.compilerDir, compilerFilename.replace('.js', '.min.js')), minified);
+      //     }
+      //   },
+      // },
       sourcemaps(),
     ],
     treeshake: {

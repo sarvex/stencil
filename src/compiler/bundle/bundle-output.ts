@@ -113,8 +113,8 @@ export const getRollupOptions = (
     }
 
     if (resolved) {
-      console.log("we're in the resolved block, wow!");
-      console.log(`nodeResolvePlugin::resolveId::resolved::`, resolved);
+      // console.log("we're in the resolved block, wow!");
+      // console.log(`nodeResolvePlugin::resolveId::resolved::`, resolved);
       if (isString(resolved)) {
         // path/to/mymodule?somequerystring (if query is truthy)
         return query ? resolved + '?' + query : resolved;
