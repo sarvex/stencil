@@ -5,7 +5,7 @@ import type { Plugin } from 'rollup';
  * Modules that are polyfilled by Stencil, rather than using the default Node implementation.
  */
 const modules = new Set([
-  // 'fs',
+  'fs',
   'crypto',
   'events',
   'module',
