@@ -194,8 +194,8 @@ function bundleExternal(opts: BuildOptions, outputDir: string, cachedDir: string
 
             if (opts.isProd) {
               try {
-                // const minifyResults = await minify(code);
-                // code = minifyResults.code;
+                const minifyResults = await minify(code);
+                code = minifyResults.code;
               } catch (e) {
                 rejectBundle(e);
                 return;

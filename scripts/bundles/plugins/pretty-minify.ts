@@ -26,7 +26,7 @@ export function prettyMinifyPlugin(opts: BuildOptions, preamble?: string): Plugi
                 format: { ecma: 2018, indent_level: 1, beautify: true, comments: false, preamble },
                 sourceMap: false,
               });
-              // b.code = minifyResults.code;
+              b.code = minifyResults.code;
             }
           })
         );
