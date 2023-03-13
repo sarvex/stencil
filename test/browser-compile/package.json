@@ -9,8 +9,5 @@
     "start": "node ../../bin/stencil build --debug --watch --dev --serve"
   },
   "author": "Ionic Team",
-  "license": "MIT",
-  "dependencies": {
-    "@webcontainer/api": "^1.0.2"
-  }
+  "license": "MIT"
 }
