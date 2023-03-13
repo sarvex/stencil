@@ -154,7 +154,7 @@ export async function compiler(opts: BuildOptions) {
           };
         },
       },
-      inlinedCompilerDepsPlugin(opts, inputDir),
+      // inlinedCompilerDepsPlugin(opts, inputDir),
       parse5Plugin(opts),
       sizzlePlugin(opts),
       aliasPlugin(opts),

@@ -61,9 +61,12 @@ export const generateHydrateApp = async (
       onwarn: createOnWarnFn(buildCtx.diagnostics),
     };
 
+    console.log('ABOUT TO hydrate rollup with options:');
+    console.log(rollupOptions);
+
     const rollupAppBuild = await rollup(rollupOptions);
 
-    console.log('does rollup build finish');
+    console.log('\n\n------\ndoes rollup build finish?\n-------');
     const rollupOutput = await rollupAppBuild.generate({
       banner: generatePreamble(config),
       format: 'cjs',

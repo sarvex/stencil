@@ -29,6 +29,10 @@ export const bundleOutput = async (
 ) => {
   try {
     const rollupOptions = getRollupOptions(config, compilerCtx, buildCtx, bundleOpts);
+
+    console.log('about to run rollup with options:');
+    console.log(rollupOptions);
+
     const rollupBuild = await rollup(rollupOptions);
 
     compilerCtx.rollupCache.set(bundleOpts.id, rollupBuild.cache);
@@ -64,7 +68,7 @@ export const getRollupOptions = (
     mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
     extensions: ['.tsx', '.ts', '.js', '.mjs', '.json', '.d.ts'],
     preferBuiltins: false,
-    browser: true,
+    // browser: true,
     // rootDir: config.rootDir,
     moduleDirectories: ['node_modules', config.rootDir],
     // ...(config.nodeResolve as any),
@@ -75,19 +79,8 @@ export const getRollupOptions = (
     const [realImportee, query] = importee.split('?');
     const [realImporter, query2] = importer.split('?');
 
-    const path = config.sys.platformPath;
-    const importeeJoined = path.isAbsolute(importee) ? importee : path.join(path.dirname(importer), importee);
-
-    const tempResolvePlugin = rollupNodeResolvePlugin({
-      mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
-      extensions: ['.js', '.tsx', '.ts', '.mjs', '.json', '.d.ts'],
-      preferBuiltins: false,
-      browser: true,
-      moduleDirectories: ['node_modules', path.dirname(importer)],
-    });
-
-    const resolved = await tempResolvePlugin.resolveId.call(
-      tempResolvePlugin,
+    const resolved = await orgNodeResolveId.call(
+      nodeResolvePlugin,
       realImportee,
       realImporter,
       {}
