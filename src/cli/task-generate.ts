@@ -1,9 +1,8 @@
-import {join, parse, relative} from 'path';
 import { validateComponentTag } from '@utils';
+import { join, parse, relative } from 'path';
 
 import { IS_NODE_ENV } from '../compiler/sys/environment';
 import type { ValidatedConfig } from '../declarations';
-import type { CoreCompiler } from './load-compiler';
 
 /**
  * Task to generate component boilerplate and write it to disk. This task can
@@ -11,11 +10,9 @@ import type { CoreCompiler } from './load-compiler';
  * being called in an inappropriate place, being asked to overwrite files that
  * already exist, etc.
  *
- * @param coreCompiler the CoreCompiler we're using currently, here we're
- * mainly accessing the `path` module
  * @param config the user-supplied config, which we need here to access `.sys`.
  */
-export const taskGenerate = async (coreCompiler: CoreCompiler, config: ValidatedConfig): Promise<void> => {
+export const taskGenerate = async (config: ValidatedConfig): Promise<void> => {
   if (!IS_NODE_ENV) {
     config.logger.error(`"generate" command is currently only implemented for a NodeJS environment`);
     return config.sys.exit(1);
@@ -66,7 +63,7 @@ export const taskGenerate = async (coreCompiler: CoreCompiler, config: Validated
 
   const filesToGenerate: readonly BoilerplateFile[] = extensionsToGenerate.map((extension) => ({
     extension,
-    path: getFilepathForFile(coreCompiler, outDir, componentName, extension),
+    path: getFilepathForFile(outDir, componentName, extension),
   }));
   await checkForOverwrite(filesToGenerate, config);
 
@@ -121,15 +118,13 @@ const chooseFilesToGenerate = async (): Promise<ReadonlyArray<GenerableExtension
  * The filepath for a given file depends on the path, the user-supplied
  * component name, the extension, and whether we're inside of a test directory.
  *
- * @param coreCompiler  the compiler we're using, here to acces the `.path` module
- * @param filePath          path to where we're going to generate the component
+ * @param filePath      path to where we're going to generate the component
  * @param componentName the user-supplied name for the generated component
  * @param extension     the file extension
  * @returns the full filepath to the component (with a possible `test` directory
  * added)
  */
 const getFilepathForFile = (
-  _coreCompiler: CoreCompiler,
   filePath: string,
   componentName: string,
   extension: GenerableExtension

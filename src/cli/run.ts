@@ -1,5 +1,5 @@
 import { hasError, isFunction, shouldIgnoreError } from '@utils';
-import { join} from 'path'
+import { join } from 'path';
 
 import { createLogger } from '../compiler/sys/logger/console-logger';
 import type * as d from '../declarations';
@@ -142,7 +142,7 @@ export const runTask = async (
 
     case 'generate':
     case 'g':
-      await taskGenerate(coreCompiler, strictConfig);
+      await taskGenerate(strictConfig);
       break;
 
     case 'help':

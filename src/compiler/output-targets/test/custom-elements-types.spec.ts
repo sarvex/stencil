@@ -1,4 +1,3 @@
-import path from 'path';
 import {
   mockBuildCtx,
   mockCompilerCtx,
@@ -7,6 +6,7 @@ import {
   mockValidatedConfig,
 } from '@stencil/core/testing';
 import { DIST_CUSTOM_ELEMENTS } from '@utils';
+import path from 'path';
 import { join, relative } from 'path';
 
 import type * as d from '../../../declarations';
