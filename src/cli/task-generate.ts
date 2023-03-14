@@ -1,4 +1,4 @@
-import {join, parse, relative} from 'path';
+import { join, parse, relative } from 'path';
 import { validateComponentTag } from '@utils';
 
 import { IS_NODE_ENV } from '../compiler/sys/environment';
