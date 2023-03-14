@@ -95,7 +95,7 @@ export const coreResolvePlugin = (
             return `
 export const Build = {
   isDev: ${config.devMode},
-  isBrowser: true,
+  isBrowser: false,
   isServer: false,
   isTesting: false,
 };`;

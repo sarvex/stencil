@@ -11,7 +11,6 @@ import { getBanner } from '../utils/banner';
 import type { BuildOptions } from '../utils/options';
 import { writePkgJson } from '../utils/write-pkg-json';
 import { aliasPlugin } from './plugins/alias-plugin';
-import { inlinedCompilerDepsPlugin } from './plugins/inlined-compiler-deps-plugin';
 import { parse5Plugin } from './plugins/parse5-plugin';
 import { replacePlugin } from './plugins/replace-plugin';
 import { sizzlePlugin } from './plugins/sizzle-plugin';
@@ -154,7 +153,6 @@ export async function compiler(opts: BuildOptions) {
           };
         },
       },
-      // inlinedCompilerDepsPlugin(opts, inputDir),
       parse5Plugin(opts),
       sizzlePlugin(opts),
       aliasPlugin(opts),
