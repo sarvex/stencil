@@ -16,7 +16,6 @@ export const bundleHydrateFactory = async (
   _build: d.BuildConditionals,
   appFactoryEntryCode: string
 ) => {
-  console.log('bundleHydrateFactory called');
   try {
     const bundleOpts: BundleOptions = {
       id: 'hydrate',
@@ -32,13 +31,9 @@ export const bundleHydrateFactory = async (
       },
     };
 
-    console.log('bundleHydrateFactory::2');
     const rollupBuild = await bundleOutput(config, compilerCtx, buildCtx, bundleOpts);
-    console.log('bundleHydrateFactory::3');
     return rollupBuild;
   } catch (e: any) {
-    console.log('🤯 ERROR IN BUNDLE HYDRATE FACTORY');
-    console.log(e);
     if (!buildCtx.hasError) {
       // TODO(STENCIL-353): Implement a type guard that balances using our own copy of Rollup types (which are
       // breakable) and type safety (so that the error variable may be something other than `any`)

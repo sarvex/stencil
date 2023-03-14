@@ -1,5 +1,4 @@
 import { catchError, createOnWarnFn, generatePreamble, loadRollupDiagnostics } from '@utils';
-import rollupNodeResolvePlugin from '@rollup/plugin-node-resolve';
 import MagicString from 'magic-string';
 import { join } from 'path';
 import { RollupOptions } from 'rollup';
@@ -55,7 +54,6 @@ export const generateHydrateApp = async (
             return null;
           },
         },
-        rollupNodeResolvePlugin(),
       ],
       treeshake: false,
       onwarn: createOnWarnFn(buildCtx.diagnostics),

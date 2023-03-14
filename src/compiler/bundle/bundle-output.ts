@@ -30,22 +30,16 @@ export const bundleOutput = async (
   try {
     const rollupOptions = getRollupOptions(config, compilerCtx, buildCtx, bundleOpts);
 
-    console.log('about to run rollup with options:');
-    console.log(rollupOptions);
-
     const rollupBuild = await rollup(rollupOptions);
 
     compilerCtx.rollupCache.set(bundleOpts.id, rollupBuild.cache);
     return rollupBuild;
   } catch (e: any) {
-    console.log('there was an error in bundleOutput');
-    console.log(e);
-
-    // if (!buildCtx.hasError) {
-    // TODO(STENCIL-353): Implement a type guard that balances using our own copy of Rollup types (which are
-    // breakable) and type safety (so that the error variable may be something other than `any`)
-    loadRollupDiagnostics(config, compilerCtx, buildCtx, e);
-    // }
+    if (!buildCtx.hasError) {
+      // TODO(STENCIL-353): Implement a type guard that balances using our own copy of Rollup types (which are
+      // breakable) and type safety (so that the error variable may be something other than `any`)
+      loadRollupDiagnostics(config, compilerCtx, buildCtx, e);
+    }
   }
   return undefined;
 };
@@ -68,16 +62,15 @@ export const getRollupOptions = (
     mainFields: ['collection:main', 'jsnext:main', 'es2017', 'es2015', 'module', 'main'],
     extensions: ['.tsx', '.ts', '.js', '.mjs', '.json', '.d.ts'],
     preferBuiltins: false,
-    // browser: true,
-    // rootDir: config.rootDir,
+    browser: true,
+    rootDir: config.rootDir,
     moduleDirectories: ['node_modules', config.rootDir],
-    // ...(config.nodeResolve as any),
   });
 
   const orgNodeResolveId = nodeResolvePlugin.resolveId;
   const orgNodeResolveId2 = (nodeResolvePlugin.resolveId = async function (importee: string, importer: string) {
     const [realImportee, query] = importee.split('?');
-    const [realImporter, query2] = importer.split('?');
+    const [realImporter, ] = importer.split('?');
 
     const resolved = await orgNodeResolveId.call(
       nodeResolvePlugin,
@@ -85,12 +78,6 @@ export const getRollupOptions = (
       realImporter,
       {}
     );
-
-    if (!resolved) {
-      console.log('had some issue resolving');
-      console.log(`nodeResolvePlugin::resolveId::importee::`, importee);
-      console.log(`nodeResolvePlugin::resolveId::importer::`, importer);
-    }
 
     if (resolved) {
       if (isString(resolved)) {
