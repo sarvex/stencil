@@ -158,7 +158,9 @@ export async function compiler(opts: BuildOptions) {
       aliasPlugin(opts),
       rollupNodeResolve({
         mainFields: ['module', 'main'],
+        browser: false,
         preferBuiltins: true,
+        exportConditions: ['node'],
       }),
       rollupCommonjs({
         transformMixedEsModules: false,

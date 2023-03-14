@@ -90,7 +90,7 @@ async function bundleTypeScriptSource(tsPath: string, opts: BuildOptions): Promi
   const o: string[] = [];
   o.push(`// TypeScript ${opts.typescriptVersion}`);
   o.push(`import { IS_NODE_ENV } from '@environment';`);
-  o.push(`process.browser = !IS_NODE_ENV;`);
+  o.push(`process.browser = false;`);
   o.push(`const ts = {};`);
   o.push(code);
   o.push(`export default ts;`);

@@ -61,12 +61,8 @@ export const generateHydrateApp = async (
       onwarn: createOnWarnFn(buildCtx.diagnostics),
     };
 
-    console.log('ABOUT TO hydrate rollup with options:');
-    console.log(rollupOptions);
-
     const rollupAppBuild = await rollup(rollupOptions);
 
-    console.log('\n\n------\ndoes rollup build finish?\n-------');
     const rollupOutput = await rollupAppBuild.generate({
       banner: generatePreamble(config),
       format: 'cjs',
@@ -78,8 +74,6 @@ export const generateHydrateApp = async (
     if (!buildCtx.hasError) {
       // TODO(STENCIL-353): Implement a type guard that balances using our own copy of Rollup types (which are
       // breakable) and type safety (so that the error variable may be something other than `any`)
-      console.log('were here, were queer, there was an error :/');
-      console.log(e);
       loadRollupDiagnostics(config, compilerCtx, buildCtx, e);
     }
   }
