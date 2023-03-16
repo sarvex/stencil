@@ -1,0 +1,63 @@
+name: 'Stencil Production Release (TEST)'
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: choice
+        description: Which version should be published?
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+          - patch
+          - minor
+          - major
+      tag:
+        required: true
+        type: choice
+        description: Which npm tag should this be published to?
+        #        TODO(NOW): RM
+        options:
+          - dev
+
+jobs:
+  release-stencil-production-build:
+    name: Publish Production Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+
+      - name: Get Core Dependencies
+        uses: ./.github/workflows/actions/get-core-dependencies
+
+      - name: Echo GH Input
+        run: |
+          echo "I do not use these values yet!"
+          echo "Version: ${{ inputs.version }}"
+          echo "Tag: ${{ inputs.tag }}"
+        shell: bash
+
+      - name: Run Publish Preparation Script
+        # TODO(NOW): These values should feed in from the choices above
+        run: npm run release.ci.prepare -- --dry-run --version 2.22.2-dev.1678795942.e009e9 --tag dev
+        shell: bash
+
+        # TODO(NOW): This is just a proof of concept
+      - name: Commit Release Preparations
+        run: |
+          git config user.name "Stencil Release Bot"
+          git config user.email "<>"
+          git add .
+          git commit -m "v${{ inputs.version }}"
+          git log
+        shell: bash
+
+      - name: Run Publish Script
+        # TODO(NOW): These values should feed in from the choices above
+        run: npm run release.ci -- --dry-run --version 2.22.2-dev.1678795942.e009e9 --tag dev
+        shell: bash
