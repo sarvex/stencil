@@ -29,10 +29,24 @@ export type PrepareReleasePromptAnswers = {
 };
 
 /**
+ * A type describing the normalized responses of {@link PrepareReleasePromptAnswers}
+ */
+export type NormalizedPrepareResponses = {
+  /**
+   * If `true`, run release preparation steps
+   */
+  confirm: boolean;
+  /**
+   * The semver string to publish use Stencil under
+   */
+  versionToUse: string;
+};
+
+/**
  * Prompts a developer to answer questions regarding how a release of Stencil should be performed
  * @param opts build options containing the metadata needed to release a new version of Stencil
  */
-export async function promptPrepareRelease(opts: BuildOptions): Promise<PrepareReleasePromptAnswers> {
+export async function promptPrepareRelease(opts: BuildOptions): Promise<NormalizedPrepareResponses> {
   const pkg = opts.packageJson;
   const oldVersion = opts.packageJson.version;
 
@@ -84,14 +98,16 @@ export async function promptPrepareRelease(opts: BuildOptions): Promise<PrepareR
     },
   ];
 
-  let answers: PrepareReleasePromptAnswers;
   try {
-    answers = await inquirer.prompt<PrepareReleasePromptAnswers>(prompts);
+    const answers = await inquirer.prompt<PrepareReleasePromptAnswers>(prompts);
+    return {
+      confirm: answers.confirm,
+      versionToUse: answers.version ?? answers.specifiedVersion,
+    };
   } catch (err: any) {
     console.log('\n', color.red(err), '\n');
     process.exit(0);
   }
-  return answers;
 }
 
 /**
@@ -117,10 +133,28 @@ export type ReleasePromptAnswers = {
 };
 
 /**
+ * A type describing the normalized responses of {@link ReleasePromptAnswers}
+ */
+export type NormalizedReleaseResponses = {
+  /**
+   * If `true`, run release preparation steps
+   */
+  confirm: boolean;
+  /**
+   * A one-time password, provided by a developer's authenticator application
+   */
+  otp: string;
+  /**
+   * The tag to push to the npm registry. This is _not_ the tag pushed to GitHub
+   */
+  tagToUse: string;
+};
+
+/**
  * Prompts a developer to answer questions regarding how a release of Stencil should be performed
  * @param opts build options containing the metadata needed to publish a new version of Stencil
  */
-export async function promptRelease(opts: BuildOptions): Promise<ReleasePromptAnswers> {
+export async function promptRelease(opts: BuildOptions): Promise<NormalizedReleaseResponses> {
   const pkg = opts.packageJson;
 
   const { execa } = await import('execa');
@@ -177,8 +211,8 @@ export async function promptRelease(opts: BuildOptions): Promise<ReleasePromptAn
       type: 'confirm',
       name: 'confirm',
       message: (answers: any) => {
-        opts.tag = answers.tag ?? answers.specifiedTag;
-        const tagPart = opts.tag ? ` and tag this release in npm as ${color.yellow(opts.tag)}` : '';
+        const tagToUse = answers.tag ?? answers.specifiedTag;
+        const tagPart = tagToUse ? ` and tag this release in npm as ${color.yellow(tagToUse)}` : '';
         return `Will publish ${opts.vermoji}  ${color.yellow(opts.version)}${tagPart}. Continue?`;
       },
     },
@@ -195,13 +229,15 @@ export async function promptRelease(opts: BuildOptions): Promise<ReleasePromptAn
     },
   ];
 
-  let answers: ReleasePromptAnswers;
   try {
-    answers = await inquirer.prompt<ReleasePromptAnswers>(prompts);
-    opts.otp = answers.otp;
+    const answers = await inquirer.prompt<ReleasePromptAnswers>(prompts);
+    return {
+      confirm: answers.confirm,
+      otp: answers.otp,
+      tagToUse: answers.tag ?? answers.specifiedTag,
+    };
   } catch (err: any) {
     console.log('\n', color.red(err), '\n');
     process.exit(0);
   }
-  return answers;
 }
