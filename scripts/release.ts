@@ -56,6 +56,31 @@ export async function release(rootDir: string, args: ReadonlyArray<string>): Pro
 
     return publishRelease(opts, args);
   }
+
+  if (args.includes('--ci-publish')) {
+    // TODO(NOW): Temp DS
+    const newVersion = '';
+    const newTag = '';
+
+    await fs.emptyDir(buildDir);
+    const prepareOpts = getOptions(rootDir, {
+      isPublishRelease: false,
+      isProd: true,
+      version: newVersion,
+    });
+    await prepareRelease(prepareOpts, args);
+
+    const publishOpts = getOptions(rootDir, {
+      buildId: prepareOpts.buildId,
+      version: prepareOpts.version,
+      vermoji: prepareOpts.vermoji,
+      isCI: prepareOpts.isCI,
+      isPublishRelease: true,
+      isProd: true,
+      tag: newTag,
+    });
+    return publishRelease(publishOpts, args);
+  }
 }
 
 /**
