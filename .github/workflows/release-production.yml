@@ -1,0 +1,35 @@
+name: 'Stencil Production Release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: choice
+        description: Which version should be published?
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+          - patch
+          - minor
+          - major
+      tag:
+        required: true
+        type: choice
+        description: Which npm tag should this be published to?
+#        TODO(NOW): RM
+        options:
+          - dev
+
+jobs:
+  release-stencil-production-build:
+    name: Publish Production Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      - name: Run Publish Script
+        run: npm run release.ci -- [CMDS HERE]
+        shell: bash
