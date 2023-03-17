@@ -89,6 +89,9 @@ export async function release(rootDir: string, args: ReadonlyArray<string>): Pro
     // TODO(NOW): Better validation
     const newTag = args[tagIdx + 1];
 
+    console.log(`new version is ${newVersion}`);
+    console.log(`new tag is ${newTag}`);
+
     prepareOpts.version = newVersion;
 
     await prepareRelease(prepareOpts, args);
@@ -134,7 +137,9 @@ async function prepareRelease(opts: BuildOptions, args: ReadonlyArray<string>): 
 async function publishRelease(opts: BuildOptions, args: ReadonlyArray<string>): Promise<void> {
   const pkg = opts.packageJson;
   if (opts.version !== pkg.version) {
-    throw new Error(`Version strings in release data (${opts.version}) and package.json (${pkg.version}) do not match. Try re-running release prepare.`);
+    throw new Error(
+      `Version strings in release data (${opts.version}) and package.json (${pkg.version}) do not match. Try re-running release prepare.`
+    );
   }
 
   console.log(`\nPublish ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.yellow(`${opts.version}`)}\n`);

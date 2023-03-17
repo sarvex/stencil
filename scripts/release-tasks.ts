@@ -30,7 +30,7 @@ export async function runReleaseTasks(opts: BuildOptions, args: ReadonlyArray<st
   const { execa } = await import('execa');
 
   if (isDryRun) {
-    console.log(color.bold.yellow(`\n  🏃‍ Dry Run!\n`));
+    console.log(color.bold.yellow(`\n  🏃‍ Dry Run (Prepare Release)!\n`));
   }
 
   if (!opts.isPublishRelease) {
@@ -227,6 +227,8 @@ export async function runReleaseTasks(opts: BuildOptions, args: ReadonlyArray<st
       },
     });
   }
+
+  console.log(JSON.stringify(tasks, null, 4));
 
   const listr = new Listr(tasks);
 
