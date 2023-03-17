@@ -95,6 +95,7 @@ export async function release(rootDir: string, args: ReadonlyArray<string>): Pro
     prepareOpts.version = newVersion;
 
     await prepareRelease(prepareOpts, args);
+    console.log(`Done preparations....somehow`);
 
     const publishOpts = getOptions(rootDir, {
       buildId: prepareOpts.buildId,
@@ -105,7 +106,8 @@ export async function release(rootDir: string, args: ReadonlyArray<string>): Pro
       isProd: true,
       tag: newTag,
     });
-    return publishRelease(publishOpts, args);
+    await publishRelease(publishOpts, args);
+    return;
   }
 }
 
@@ -145,7 +147,7 @@ async function publishRelease(opts: BuildOptions, args: ReadonlyArray<string>): 
   console.log(`\nPublish ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.yellow(`${opts.version}`)}\n`);
 
   try {
-    return runReleaseTasks(opts, args);
+    await runReleaseTasks(opts, args);
   } catch (err: any) {
     console.log('\n', color.red(err), '\n');
     process.exit(0);
