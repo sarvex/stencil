@@ -5,6 +5,7 @@ import { join } from 'path';
 import { promptPrepareRelease, promptRelease } from './prompts';
 import { runReleaseTasks } from './release-tasks';
 import { BuildOptions, getOptions } from './utils/options';
+import { getNewVersion } from './utils/release-utils';
 
 /**
  * Runner for creating a release of Stencil
@@ -58,16 +59,38 @@ export async function release(rootDir: string, args: ReadonlyArray<string>): Pro
   }
 
   if (args.includes('--ci-publish')) {
-    // TODO(NOW): Temp DS
-    const newVersion = '';
-    const newTag = '';
+    const versionIdx = args.indexOf('--version');
+    const tagIdx = args.indexOf('--tag');
+
+    if (versionIdx === -1 || versionIdx === args.length) {
+      // TODO: Available?
+      console.log(`\n${color.bold.red('No `--version [VERSION]` argument was found. Exiting')}\n`);
+      process.exit(1);
+    }
+    if (tagIdx === -1 || tagIdx === args.length) {
+      // TODO: Available?
+      console.log(`\n${color.bold.red('No `--tag [TAG]` argument was found. Exiting')}\n`);
+      process.exit(1);
+    }
 
     await fs.emptyDir(buildDir);
     const prepareOpts = getOptions(rootDir, {
       isPublishRelease: false,
       isProd: true,
-      version: newVersion,
+      //  TODO(NOW): Does this get assigned right?
+      // version: newVersion,
     });
+
+    console.log(`version idx ${versionIdx} gives us ${args[versionIdx + 1]}`);
+    console.log(`tag idx ${tagIdx} gives us ${args[tagIdx + 1]}`);
+
+    // TODO(NOW): Temp DS
+    const newVersion = getNewVersion(prepareOpts.packageJson.version, args[versionIdx + 1]);
+    // TODO(NOW): Better validation
+    const newTag = args[tagIdx + 1];
+
+    prepareOpts.version = newVersion;
+
     await prepareRelease(prepareOpts, args);
 
     const publishOpts = getOptions(rootDir, {

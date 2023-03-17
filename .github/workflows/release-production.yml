@@ -19,7 +19,7 @@ on:
         required: true
         type: choice
         description: Which npm tag should this be published to?
-#        TODO(NOW): RM
+        #        TODO(NOW): RM
         options:
           - dev
 
@@ -30,6 +30,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      - name: Verify GH Input
+        run: |
+          echo "I do not use these values yet!"
+          echo "Version: ${{ inputs.version }}"
+          echo "Tag: ${{ inputs.tag }}"
+        shell: bash
       - name: Run Publish Script
-        run: npm run release.ci -- [CMDS HERE]
+        # TODO(NOW): These values should feed in from the choices above
+        run: npm run release.ci -- --dry-run --version 2.22.2-dev.1678795942.e009e9 --tag dev
         shell: bash
