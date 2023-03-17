@@ -239,26 +239,24 @@ export async function runReleaseTasks(opts: BuildOptions, args: ReadonlyArray<st
 
   const listr = new Listr(tasks);
 
-  listr
-    .run()
-    .then(() => {
-      if (opts.isPublishRelease) {
-        console.log(
-          `\n ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.bold.yellow(newVersion)} published!! ${
-            opts.vermoji
-          }\n`
-        );
-      } else {
-        console.log(
-          `\n ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.bold.yellow(
-            newVersion
-          )} prepared, check the diffs and commit ${opts.vermoji}\n`
-        );
-      }
-    })
-    .catch((err) => {
-      console.log(`\n🤒  ${color.red(err)}\n`);
-      console.log(err);
-      process.exit(1);
-    });
+  try {
+    await listr.run();
+  } catch (err: any) {
+    console.log(`\n🤒  ${color.red(err)}\n`);
+    console.log(err);
+    process.exit(1);
+  }
+  if (opts.isPublishRelease) {
+    console.log(
+      `\n ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.bold.yellow(newVersion)} published!! ${
+        opts.vermoji
+      }\n`
+    );
+  } else {
+    console.log(
+      `\n ${opts.vermoji}  ${color.bold.magenta(pkg.name)} ${color.bold.yellow(
+        newVersion
+      )} prepared, check the diffs and commit ${opts.vermoji}\n`
+    );
+  }
 }
