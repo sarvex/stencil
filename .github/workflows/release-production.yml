@@ -31,6 +31,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+
+      - name: Get Core Dependencies
+        uses: ./.github/workflows/actions/get-core-dependencies
+
       - name: Verify GH Input
         run: |
           echo "I do not use these values yet!"
