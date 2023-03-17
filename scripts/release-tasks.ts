@@ -155,12 +155,19 @@ export async function runReleaseTasks(opts: BuildOptions, args: ReadonlyArray<st
         task: async () => {
           // use `--no-git-tag-version` to ensure that the tag for the release is not prematurely created
           await execa('npm', ['version', '--no-git-tag-version', opts.version], { cwd: rootDir });
+          await execa('npm', ['version']);
         },
       },
       {
         title: `Generate ${opts.version} Changelog ${opts.vermoji}`,
         task: () => {
           return updateChangeLog(opts);
+        },
+      },
+      {
+        title: `Show Diff`,
+        task: async () => {
+          await execa('git', ['diff']);
         },
       }
     );
