@@ -136,22 +136,23 @@ export const runTask = async (
 
   const strictConfig: ValidatedConfig = {
     ...config,
+    buildEs5: config.buildEs5 === true || (!devMode && config.buildEs5 === 'prod'),
+    devMode,
     flags: createConfigFlags(config.flags ?? { task }),
+    fsNamespace: config.fsNamespace ?? DEFAULT_FS_NAMESPACE,
+    hashFileNames: config.hashFileNames ?? !devMode,
+    hashedFileNameLength: config.hashedFileNameLength ?? DEFAULT_HASHED_FILENAME_LENTH,
     hydratedFlag: config.hydratedFlag ?? null,
     logger,
+    minifyCss: config.minifyCss ?? !devMode,
+    minifyJs: config.minifyJs ?? !devMode,
+    namespace: config.namespace ?? DEFAULT_NAMESPACE,
     outputTargets: config.outputTargets ?? [],
     packageJsonFilePath: configSys.platformPath.join(rootDir, 'package.json'),
     rootDir,
     sys: configSys,
     testing: config.testing ?? {},
     transformAliasedImportPaths: config.transformAliasedImportPaths ?? false,
-    namespace: config.namespace ?? DEFAULT_NAMESPACE,
-    fsNamespace: config.fsNamespace ?? DEFAULT_FS_NAMESPACE,
-    minifyJs: config.minifyJs ?? !devMode,
-    minifyCss: config.minifyCss ?? !devMode,
-    hashFileNames: config.hashFileNames ?? !devMode,
-    hashedFileNameLength: config.hashedFileNameLength ?? DEFAULT_HASHED_FILENAME_LENTH,
-    buildEs5: config.buildEs5 === true || (!devMode && config.buildEs5 === 'prod'),
   };
 
   switch (task) {

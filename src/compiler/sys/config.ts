@@ -13,6 +13,7 @@ import {
 import { setPlatformPath } from '../sys/modules/path';
 import { createLogger } from './logger/console-logger';
 import { createSystem } from './stencil-sys';
+// import { validateConfig } from '../config/validate-config';
 
 export const getConfig = (userConfig: d.Config): d.ValidatedConfig => {
   const logger = userConfig.logger ?? createLogger();
@@ -32,19 +33,24 @@ export const getConfig = (userConfig: d.Config): d.ValidatedConfig => {
 
   const config: d.ValidatedConfig = {
     ...userConfig,
+    // ...validateConfig(userConfig, {}).config,
+    buildEs5: userConfig.buildEs5 === true || (!devMode && userConfig.buildEs5 === 'prod'),
+    devMode,
     flags: createConfigFlags(userConfig.flags ?? {}),
-    logger,
-    outputTargets: userConfig.outputTargets ?? [],
-    rootDir: userConfig.rootDir ?? '/',
-    sys: userConfig.sys ?? createSystem({ logger }),
-    testing: userConfig ?? {},
-    namespace: userConfig.namespace ?? DEFAULT_NAMESPACE,
     fsNamespace: userConfig.fsNamespace ?? DEFAULT_FS_NAMESPACE,
-    minifyJs: userConfig.minifyJs ?? !devMode,
-    minifyCss: userConfig.minifyCss ?? !devMode,
     hashFileNames,
     hashedFileNameLength: userConfig.hashedFileNameLength ?? DEFAULT_HASHED_FILENAME_LENTH,
-    buildEs5: userConfig.buildEs5 === true || (!devMode && userConfig.buildEs5 === 'prod'),
+    hydratedFlag: userConfig.hydratedFlag ?? null,
+    logger,
+    minifyCss: userConfig.minifyCss ?? !devMode,
+    minifyJs: userConfig.minifyJs ?? !devMode,
+    namespace: userConfig.namespace ?? DEFAULT_NAMESPACE,
+    outputTargets: userConfig.outputTargets ?? [],
+    packageJsonFilePath: join(rootDir, 'package.json'),
+    rootDir,
+    sys: userConfig.sys ?? createSystem({ logger }),
+    testing: userConfig ?? {},
+    transformAliasedImportPaths: userConfig.transformAliasedImportPaths ?? false,
   };
 
   setPlatformPath(config.sys.platformPath);
