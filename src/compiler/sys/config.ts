@@ -12,8 +12,15 @@ import {
 import { setPlatformPath } from '../sys/modules/path';
 import { createLogger } from './logger/console-logger';
 import { createSystem } from './stencil-sys';
-// import { validateConfig } from '../config/validate-config';
 
+/**
+ * Given a user-supplied config, get a validated config which can be used to
+ * start building a Stencil project.
+ *
+ *
+ * @param userConfig a configuration object
+ * @returns a validated config object with stricter typing
+ */
 export const getConfig = (userConfig: d.Config): d.ValidatedConfig => {
   const logger = userConfig.logger ?? createLogger();
   const rootDir = userConfig.rootDir ?? '/';
@@ -32,7 +39,6 @@ export const getConfig = (userConfig: d.Config): d.ValidatedConfig => {
 
   const config: d.ValidatedConfig = {
     ...userConfig,
-    // ...validateConfig(userConfig, {}).config,
     buildEs5: userConfig.buildEs5 === true || (!devMode && userConfig.buildEs5 === 'prod'),
     devMode,
     flags: createConfigFlags(userConfig.flags ?? {}),
