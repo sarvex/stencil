@@ -1,3 +1,15 @@
+import {
+  ComponentCompilerEventComplexType,
+  ComponentCompilerMethodComplexType,
+  ComponentCompilerPropertyComplexType,
+  ComponentCompilerReferencedType,
+} from './stencil-private';
+
+/**
+ * TODO: Document
+ */
+export type JsonDocsTypeLibrary = Record<string, ComponentCompilerReferencedType>;
+
 export interface JsonDocs {
   components: JsonDocsComponent[];
   timestamp: string;
@@ -6,6 +18,7 @@ export interface JsonDocs {
     version: string;
     typescriptVersion: string;
   };
+  typeLibrary: JsonDocsTypeLibrary;
 }
 
 export interface JsonDocsComponent {
@@ -77,6 +90,7 @@ export interface JsonDocsUsage {
 
 export interface JsonDocsProp {
   name: string;
+  complexType?: ComponentCompilerPropertyComplexType;
   type: string;
   mutable: boolean;
   /**
@@ -101,6 +115,7 @@ export interface JsonDocsMethod {
   signature: string;
   returns: JsonDocsMethodReturn;
   parameters: JsonDocMethodParameter[];
+  complexType: ComponentCompilerMethodComplexType;
 }
 
 export interface JsonDocsMethodReturn {
@@ -119,6 +134,7 @@ export interface JsonDocsEvent {
   bubbles: boolean;
   cancelable: boolean;
   composed: boolean;
+  complexType: ComponentCompilerEventComplexType;
   docs: string;
   docsTags: JsonDocsTag[];
   deprecation?: string;

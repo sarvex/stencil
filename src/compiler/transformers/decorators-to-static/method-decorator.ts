@@ -92,8 +92,8 @@ const parseMethodDecorator = (
       signature: signatureString,
       parameters: signature.parameters.map((symbol) => serializeSymbol(typeChecker, symbol)),
       references: {
-        ...getAttributeTypeInfo(returnTypeNode, tsSourceFile),
-        ...getAttributeTypeInfo(method, tsSourceFile),
+        ...getAttributeTypeInfo(returnTypeNode, tsSourceFile, typeChecker),
+        ...getAttributeTypeInfo(method, tsSourceFile, typeChecker),
       },
       return: returnString,
     },

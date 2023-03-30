@@ -3,6 +3,7 @@ import ts from 'typescript';
 
 import type * as d from '../../declarations';
 import { MEMBER_DECORATORS_TO_REMOVE } from './decorators-to-static/decorators-constants';
+import { addToLibrary } from './type-library';
 
 export const getScriptTarget = () => {
   // using a fn so the browser compiler doesn't require the global ts for startup
@@ -370,15 +371,18 @@ export class ObjectMap {
  * Generate a series of type references for a given AST node
  * @param baseNode the AST node to pull type references from
  * @param sourceFile the source file in which the provided `baseNode` exists
+ * @param checker a {@link ts.TypeChecker} instance
  * @returns the generated series of type references
  */
 export const getAttributeTypeInfo = (
   baseNode: ts.Node,
-  sourceFile: ts.SourceFile
+  sourceFile: ts.SourceFile,
+  checker: ts.TypeChecker
 ): d.ComponentCompilerTypeReferences => {
   const allReferences: d.ComponentCompilerTypeReferences = {};
-  getAllTypeReferences(baseNode).forEach((typeName: string) => {
-    allReferences[typeName] = getTypeReferenceLocation(typeName, sourceFile);
+  getAllTypeReferences(checker, baseNode).forEach((typeInfo) => {
+    const { name, type } = typeInfo;
+    allReferences[name] = getTypeReferenceLocation(name, type, sourceFile, checker);
   });
   return allReferences;
 };
@@ -398,13 +402,20 @@ const getEntityName = (entity: ts.EntityName): string => {
   }
 };
 
+interface TypeReferenceIR {
+  name: string;
+  type: ts.Type;
+}
+
 /**
  * Recursively walks the provided AST to collect all TypeScript type references that are found
+ *
+ * @param checker a {@link ts.TypeChecker} instance
  * @param node the node to walk to retrieve type information
  * @returns the collected type references
  */
-const getAllTypeReferences = (node: ts.Node): ReadonlyArray<string> => {
-  const referencedTypes: string[] = [];
+const getAllTypeReferences = (checker: ts.TypeChecker, node: ts.Node): ReadonlyArray<TypeReferenceIR> => {
+  const referencedTypes: TypeReferenceIR[] = [];
 
   const visit = (node: ts.Node): ts.VisitResult<ts.Node> => {
     /**
@@ -413,7 +424,10 @@ const getAllTypeReferences = (node: ts.Node): ReadonlyArray<string> => {
      * In TypeScript, types that are also keywords (e.g. `number` in `const foo: number`) are not `TypeReferenceNode`s.
      */
     if (ts.isTypeReferenceNode(node)) {
-      referencedTypes.push(getEntityName(node.typeName));
+      referencedTypes.push({
+        name: getEntityName(node.typeName),
+        type: checker.getTypeFromTypeNode(node),
+      });
       if (node.typeArguments) {
         // a type may contain types itself (e.g. generics - Foo<Bar>)
         node.typeArguments
@@ -421,7 +435,10 @@ const getAllTypeReferences = (node: ts.Node): ReadonlyArray<string> => {
           .forEach((typeRef: ts.TypeReferenceNode) => {
             const typeName = typeRef.typeName as ts.Identifier;
             if (typeName && typeName.escapedText) {
-              referencedTypes.push(typeName.escapedText.toString());
+              referencedTypes.push({
+                name: typeName.escapedText.toString(),
+                type: checker.getTypeFromTypeNode(typeRef),
+              });
             }
           });
       }
@@ -461,10 +478,17 @@ export const validateReferences = (
  * The type may be declared using the `type` or `interface` keywords.
  *
  * @param typeName the name of the type to find the origination of
+ * @param type the type in question
  * @param tsNode the TypeScript AST node being searched for the provided `typeName`
+ * @param checker a TypeScript typechecker instance
  * @returns the context stating where the type originates from
  */
-const getTypeReferenceLocation = (typeName: string, tsNode: ts.Node): d.ComponentCompilerTypeReference => {
+const getTypeReferenceLocation = (
+  typeName: string,
+  type: ts.Type,
+  tsNode: ts.SourceFile,
+  checker: ts.TypeChecker
+): d.ComponentCompilerTypeReference => {
   const sourceFileObj = tsNode.getSourceFile();
 
   // Loop through all top level imports to find any reference to the type for 'import' reference location
@@ -484,10 +508,12 @@ const getTypeReferenceLocation = (typeName: string, tsNode: ts.Node): d.Componen
   }) as ts.ImportDeclaration;
 
   if (importTypeDeclaration) {
+    const id = addToLibrary(type, typeName, checker);
     const localImportPath = (<ts.StringLiteral>importTypeDeclaration.moduleSpecifier).text;
     return {
       location: 'import',
       path: localImportPath,
+      id,
     };
   }
 
@@ -518,6 +544,8 @@ const getTypeReferenceLocation = (typeName: string, tsNode: ts.Node): d.Componen
   });
 
   if (isExported) {
+    const id = addToLibrary(type, typeName, checker);
+
     return {
       location: 'local',
       // If this is a local import, we know the path to the type
@@ -529,12 +557,15 @@ const getTypeReferenceLocation = (typeName: string, tsNode: ts.Node): d.Componen
       // declaration file. If this path is omitted, the correct aliased type names
       // will not be used for component event definitions
       path: sourceFileObj.fileName,
+      id,
     };
   }
 
+  const id = addToLibrary(type, typeName, checker);
   // This is most likely a global type, if it is a local that is not exported then typescript will inform the dev
   return {
     location: 'global',
+    id,
   };
 };
 

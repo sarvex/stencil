@@ -192,6 +192,7 @@ declare module "@stencil/core" {
               resolved: '"wee" | "woo"',
               references: {
                 SecondUserImplementedEventType: {
+                  id: 'placeholder',
                   location: 'import',
                   path: './resources',
                 },
@@ -283,6 +284,7 @@ declare module "@stencil/core" {
               references: {
                 UserImplementedEventType: {
                   location: 'import',
+                  id: 'placeholder',
                   path: './resources',
                 },
               },
@@ -305,6 +307,7 @@ declare module "@stencil/core" {
               references: {
                 UserImplementedEventType: {
                   location: 'import',
+                  id: 'placeholder',
                   path: '../resources',
                 },
               },
@@ -428,6 +431,7 @@ declare module "@stencil/core" {
                 UserImplementedEventType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -450,6 +454,7 @@ declare module "@stencil/core" {
                 UserImplementedEventType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -574,6 +579,7 @@ declare module "@stencil/core" {
                 UserImplementedEventType: {
                   location: 'local',
                   path: '/some/stubbed/path/a/my-component.tsx',
+                  id: 'placeholder',
                 },
               },
             },
@@ -595,6 +601,7 @@ declare module "@stencil/core" {
               references: {
                 UserImplementedEventType: {
                   location: 'local',
+                  id: 'placeholder',
                   path: '/some/stubbed/path/b/my-new-component.tsx',
                 },
               },
@@ -720,6 +727,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -807,6 +815,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -820,6 +829,7 @@ declare module "@stencil/core" {
                 SecondUserImplementedPropType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -909,6 +919,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -932,6 +943,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'import',
                   path: '../resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -1048,6 +1060,7 @@ declare module "@stencil/core" {
               references: {
                 UserImplementedPropType: {
                   location: 'import',
+                  id: 'placeholder',
                   path: './resources',
                 },
               },
@@ -1072,6 +1085,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'import',
                   path: './resources',
+                  id: 'placeholder',
                 },
               },
             },
@@ -1191,6 +1205,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'local',
                   path: '/some/stubbed/path/a/my-component.tsx',
+                  id: 'placeholder',
                 },
               },
             },
@@ -1214,6 +1229,7 @@ declare module "@stencil/core" {
                 UserImplementedPropType: {
                   location: 'local',
                   path: '/some/stubbed/path/b/my-new-component.tsx',
+                  id: 'placeholder',
                 },
               },
             },
@@ -1336,6 +1352,7 @@ declare module "@stencil/core" {
               UserImplementedPropType: {
                 location: 'import',
                 path: './resources',
+                id: 'placeholder',
               },
             },
           },

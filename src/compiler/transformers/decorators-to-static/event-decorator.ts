@@ -97,7 +97,7 @@ const getComplexType = (
   return {
     original: eventType ? eventType.getText() : 'any',
     resolved: eventType ? resolveType(typeChecker, typeChecker.getTypeFromTypeNode(eventType)) : 'any',
-    references: eventType ? getAttributeTypeInfo(eventType, sourceFile) : {},
+    references: eventType ? getAttributeTypeInfo(eventType, sourceFile, typeChecker) : {},
   };
 };
 

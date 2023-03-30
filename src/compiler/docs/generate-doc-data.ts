@@ -1,6 +1,7 @@
 import { flatOne, normalizePath, sortBy, unique } from '@utils';
 import { basename, dirname, join, relative } from 'path';
 
+import { getTypeLibrary } from '../../compiler/transformers/type-library';
 import type * as d from '../../declarations';
 import { JsonDocsValue } from '../../declarations';
 import { typescriptVersion, version } from '../../version';
@@ -19,6 +20,8 @@ export const generateDocData = async (
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx
 ): Promise<d.JsonDocs> => {
+  const typeLibrary = getTypeLibrary();
+
   return {
     timestamp: getBuildTimestamp(),
     compiler: {
@@ -27,11 +30,13 @@ export const generateDocData = async (
       typescriptVersion,
     },
     components: await getDocsComponents(config, compilerCtx, buildCtx),
+    typeLibrary,
   };
 };
 
 /**
  * Derive the metadata for each Stencil component
+ *
  * @param config the configuration associated with the current Stencil task run
  * @param compilerCtx the current compiler context
  * @param buildCtx the build context for the current Stencil task run
@@ -50,6 +55,7 @@ const getDocsComponents = async (
       const usagesDir = normalizePath(join(dirPath, 'usage'));
       const readme = await getUserReadmeContent(compilerCtx, readmePath);
       const usage = await generateUsages(compilerCtx, usagesDir);
+
       return moduleFile.cmps
         .filter((cmp: d.ComponentCompilerMeta) => !cmp.internal && !cmp.isCollectionDependency)
         .map((cmp: d.ComponentCompilerMeta) => ({
@@ -140,6 +146,7 @@ const getRealProperties = (properties: d.ComponentCompilerProperty[]): d.JsonDoc
     .map((member) => ({
       name: member.name,
       type: member.complexType.resolved,
+      complexType: member.complexType,
       mutable: member.mutable,
       attr: member.attribute,
       reflectToAttr: !!member.reflect,
@@ -228,6 +235,7 @@ const getDocsMethods = (methods: d.ComponentCompilerMethod[]): d.JsonDocsMethod[
           .map((t) => t.text)
           .join('\n'),
       },
+      complexType: member.complexType,
       signature: `${member.name}${member.complexType.signature}`,
       parameters: [], // TODO
       docs: member.docs.text,
@@ -243,6 +251,7 @@ const getDocsEvents = (events: d.ComponentCompilerEvent[]): d.JsonDocsEvent[] =>
       event: eventMeta.name,
       detail: eventMeta.complexType.resolved,
       bubbles: eventMeta.bubbles,
+      complexType: eventMeta.complexType,
       cancelable: eventMeta.cancelable,
       composed: eventMeta.composed,
       docs: eventMeta.docs.text,

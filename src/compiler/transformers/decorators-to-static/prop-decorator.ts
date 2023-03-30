@@ -169,7 +169,7 @@ const getComplexType = (
   return {
     original: nodeType ? nodeType.getText() : typeToString(typeChecker, type),
     resolved: resolveType(typeChecker, type),
-    references: getAttributeTypeInfo(node, node.getSourceFile()),
+    references: getAttributeTypeInfo(node, node.getSourceFile(), typeChecker),
   };
 };
 
