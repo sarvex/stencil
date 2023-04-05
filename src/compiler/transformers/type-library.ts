@@ -2,6 +2,7 @@ import path from 'path';
 import ts from 'typescript';
 
 import type * as d from '../../declarations';
+import {resolveType} from './transform-utils';
 
 /**
  * This is a {@link d.JsonDocsTypeLibrary} cache which is used to store a
@@ -21,7 +22,9 @@ const TYPE_LIBRARY: d.JsonDocsTypeLibrary = {};
  * @returns the unique ID for the type in question
  */
 export function addToLibrary(type: ts.Type, typeName: string, checker: ts.TypeChecker): string {
+  console.log('adding ', typeName);
   const pathToTypeModule = getPathToTypeModule(type);
+  console.log('path::', pathToTypeModule);
 
   // for now we don't make any attempt to include types in node_modules
   if (pathToTypeModule.startsWith('node_modules')) {
@@ -82,6 +85,29 @@ export function addFileToLibrary(filePath: string): void {
 
         addToLibrary(type, typeName, checker);
       }
+    } else if (ts.isExportDeclaration(node)) {
+      // if there are named exports (like `export { Pie, Cake } from './dessert'`)
+      // we get each export specifier (`Pie`, `Cake`), use the typechecker
+      // to get it's type, figure out the name, and so on.
+      if (ts.isNamedExports(node.exportClause)) {
+        node.exportClause.elements.forEach((exportSpecifier) => {
+          const type = checker.getTypeAtLocation(exportSpecifier);
+          const name = exportSpecifier.name.getText();
+          console.log('oh no! its a ', name);
+          console.log(resolveType(checker, type));
+
+          addToLibrary(type, name, checker);
+        });
+      } else {
+        // if it's _not_ a named export clause then it's something like
+        // `export * from 'foo'`, so we need to deal with all the symbols
+        // exports from that module.
+        checker.getExportsOfModule(checker.getSymbolAtLocation(node.moduleSpecifier)).forEach((exportedSymbol) => {
+          const type = checker.getTypeAtLocation(exportedSymbol.valueDeclaration);
+          const name = exportedSymbol.name;
+          addToLibrary(type, name, checker);
+        });
+      }
     }
   });
 }
@@ -124,7 +150,6 @@ function isNotPrivate(node: TypeDeclLike): boolean {
 
   return !jsDocTags.some((tag) => tag.tagName.text === 'private');
 }
-
 
 /**
  * Get a string representation of the original declaration for a
