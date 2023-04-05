@@ -56,6 +56,77 @@ export function getTypeLibrary(): d.JsonDocsTypeLibrary {
 }
 
 /**
+ * Helper function that, given a file containing interfaces to document, will
+ * add all the types exported from that file to the type library.
+ *
+ * This will exclude any types that are marked 'private' via JSDoc.
+ *
+ * @param filePath the path to the file of interest
+ */
+export function addFileToLibrary(filePath: string): void {
+  const program = ts.createProgram([filePath], {});
+  const checker = program.getTypeChecker();
+
+  const sourceFile = program.getSourceFile(filePath);
+
+  if (!sourceFile) {
+    return;
+  }
+
+  ts.forEachChild(sourceFile, (node) => {
+    if (isTypeDeclLike(node) && isExported(node) && isNotPrivate(node)) {
+      const type = checker.getTypeAtLocation(node);
+
+      if (type) {
+        const typeName = node.name.getText();
+
+        addToLibrary(type, typeName, checker);
+      }
+    }
+  });
+}
+
+/**
+ * The 'type declaration like' syntax node types
+ */
+type TypeDeclLike = ts.InterfaceDeclaration | ts.TypeAliasDeclaration | ts.EnumDeclaration;
+
+/**
+ * Check that a {@link ts.Node} is a type-declaration-like node. For our
+ * purposes, this means that it is either an interface declaration, a type
+ * alias, or an enum declaration.
+ *
+ * @param node a TypeScript syntax tree node
+ * @returns whether or not this node is a type-declaration-like node
+ */
+function isTypeDeclLike(node: ts.Node): node is TypeDeclLike {
+  return ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isEnumDeclaration(node);
+}
+
+/**
+ * Check if a {@link ts.Declaration} is exported.
+ *
+ * @param node a TypeScript syntax tree node
+ * @returns whether or not this node is exported
+ */
+function isExported(node: TypeDeclLike): boolean {
+  return (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) !== 0;
+}
+
+/**
+ * Check that a {@link ts.Declaration} is not marked as 'private' via JSDoc.
+ *
+ * @param node a TypeScript syntax tree node to check
+ * @returns whether or not this node is marked as 'private'
+ */
+function isNotPrivate(node: TypeDeclLike): boolean {
+  const jsDocTags = ts.getJSDocTags(node);
+
+  return !jsDocTags.some((tag) => tag.tagName.text === 'private');
+}
+
+
+/**
  * Get a string representation of the original declaration for a
  * {@link ts.Type} object.
  *

@@ -1,15 +1,18 @@
 import { flatOne, normalizePath, sortBy, unique } from '@utils';
 import { basename, dirname, join, relative } from 'path';
 
-import { getTypeLibrary } from '../../compiler/transformers/type-library';
+import { addFileToLibrary, getTypeLibrary } from '../../compiler/transformers/type-library';
 import type * as d from '../../declarations';
 import { JsonDocsValue } from '../../declarations';
 import { typescriptVersion, version } from '../../version';
 import { getBuildTimestamp } from '../build/build-ctx';
+import { isOutputTargetDocsJson } from '../output-targets/output-utils';
 import { AUTO_GENERATE_COMMENT } from './constants';
 
 /**
- * Generate metadata that will be used to generate any given documentation-related output target(s)
+ * Generate metadata that will be used to generate any given documentation-related
+ * output target(s)
+ *
  * @param config the configuration associated with the current Stencil task run
  * @param compilerCtx the current compiler context
  * @param buildCtx the build context for the current Stencil task run
@@ -20,6 +23,16 @@ export const generateDocData = async (
   compilerCtx: d.CompilerCtx,
   buildCtx: d.BuildCtx
 ): Promise<d.JsonDocs> => {
+  const jsonOutputTargets = config.outputTargets.filter(isOutputTargetDocsJson);
+  const supplementalPublicTypes = jsonOutputTargets?.[0]?.supplementalPublicTypes ?? '';
+
+  if (supplementalPublicTypes !== '') {
+    // if supplementalPublicTypes is set then we want to add all the public
+    // types in that file to the type library so that specific output targets
+    // can make use of that data later.
+    addFileToLibrary(supplementalPublicTypes);
+  }
+
   const typeLibrary = getTypeLibrary();
 
   return {
