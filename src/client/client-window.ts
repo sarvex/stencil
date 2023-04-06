@@ -37,10 +37,9 @@ export const supportsShadow =
     ? /*@__PURE__*/ (() => (doc.head.attachShadow + '').indexOf('[native') > -1)()
     : true;
 
-export const supportsElementInternals =
-  BUILD.formAssociated
-    ? /*@__PURE__*/ (() => (window.ElementInternals && HTMLElement.prototype.attachInternals))()
-    : false;
+export const supportsElementInternals = BUILD.formAssociated
+  ? /*@__PURE__*/ (() => window.ElementInternals && HTMLElement.prototype.attachInternals)()
+  : false;
 
 export const supportsListenerOptions = /*@__PURE__*/ (() => {
   let supportsListenerOptions = false;

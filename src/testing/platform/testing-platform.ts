@@ -37,7 +37,7 @@ export const setSupportsShadowDom = (supports: boolean) => {
   supportsShadow = supports;
 };
 
-export const setSupportsElementInternals  = (supports: boolean) => {
+export const setSupportsElementInternals = (supports: boolean) => {
   supportsElementInternals = supports;
 };
 
