@@ -1,7 +1,7 @@
 /**
  * Options for conventional changelog.
  */
-const options = {
+module.exports = {
   parserOpts: {
     /**
      * Override the conventional-changelog parser's preset for detecting issues. Stencil uses the "Angular preset",
@@ -15,5 +15,3 @@ const options = {
     issuePrefixes: ['closes: #', 'closes:#', 'closes- #', 'closes-#', 'closes #', 'closes#'],
   },
 };
-
-export default options;
