@@ -13,6 +13,7 @@ export const BUILD: BuildConditionals = {
   disconnectedCallback: true,
   element: true,
   event: true,
+  formAssociated: false,
   hasRenderFn: true,
   lifecycle: true,
   hostListener: true,

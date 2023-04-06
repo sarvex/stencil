@@ -67,6 +67,7 @@ export const enum CMP_FLAGS {
   needsShadowDomShim = 1 << 3,
   shadowDelegatesFocus = 1 << 4,
   hasMode = 1 << 5,
+  formAssociated = 1 << 6,
   // TODO(STENCIL-662): Remove code related to deprecated shadowDomShim field
   needsScopedEncapsulation = scopedCssEncapsulation | needsShadowDomShim,
 }

@@ -23,6 +23,7 @@ export const formatComponentRuntimeMeta = (
   let flags = 0;
   if (compilerMeta.encapsulation === 'shadow') {
     flags |= CMP_FLAGS.shadowDomEncapsulation;
+    flags |= CMP_FLAGS.formAssociated;
     if (compilerMeta.shadowDelegatesFocus) {
       flags |= CMP_FLAGS.shadowDelegatesFocus;
     }

@@ -27,7 +27,8 @@ export const componentDecoratorToStatic = (
 
   if (componentOptions.shadow) {
     newMembers.push(createStaticGetter('encapsulation', convertValueToLiteral('shadow')));
-
+    const faMember = createStaticGetter('formAssociated', convertValueToLiteral(componentOptions.formAssociated));
+    newMembers.push(faMember);
     if (typeof componentOptions.shadow !== 'boolean') {
       if (componentOptions.shadow.delegatesFocus === true) {
         newMembers.push(createStaticGetter('delegatesFocus', convertValueToLiteral(true)));
@@ -68,6 +69,16 @@ const validateComponent = (
     const err = buildError(diagnostics);
     err.messageText = `Components cannot be "scoped" and "shadow" at the same time, they are mutually exclusive configurations.`;
     augmentDiagnosticWithNode(err, findTagNode('scoped', componentDecorator));
+    return false;
+  }
+
+  if (
+    componentOptions.formAssociated &&
+    (!componentOptions.shadow || componentOptions.scoped || (!componentOptions.shadow && !componentOptions.scoped))
+  ) {
+    const err = buildError(diagnostics);
+    err.messageText = `Components using "formAssociated" must have "shadow" set.`;
+    augmentDiagnosticWithNode(err, findTagNode('formAssociated', componentDecorator));
     return false;
   }
 

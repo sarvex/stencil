@@ -139,6 +139,7 @@ function getAppOutputs(config: d.Config, buildResults: d.CompilerBuildResults) {
   });
 }
 
+// TODO(): add to stats, not on critical path though
 function getComponentsFileMap(config: d.Config, buildCtx: d.BuildCtx) {
   return buildCtx.components.map((component) => {
     return {

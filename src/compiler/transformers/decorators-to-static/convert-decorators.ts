@@ -56,7 +56,7 @@ const visitClassDeclaration = (
   // behavior specified for those decorated methods later on.
   const filteredMethodsAndFields = removeStencilMethodDecorators(Array.from(classMembers), diagnostics);
 
-  // parser component decorator (Component)
+  // parse component decorator (Component)
   componentDecoratorToStatic(config, typeChecker, diagnostics, classNode, filteredMethodsAndFields, componentDecorator);
 
   // stores a reference to fields that should be watched for changes

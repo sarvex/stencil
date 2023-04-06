@@ -52,8 +52,11 @@ export interface ComponentOptions {
    * Array of relative links to folders of assets required by the component.
    */
   assetsDirs?: string[];
+
+  formAssociated?: boolean;
 }
 
+// TODO: Add to options? Initially decided against, since that's not an actual SR opt
 export interface ShadowRootOptions {
   /**
    * When set to `true`, specifies behavior that mitigates custom element issues

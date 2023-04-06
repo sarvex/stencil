@@ -316,6 +316,11 @@ export interface ConfigExtras {
   enableImportInjection?: boolean;
 
   /**
+   * Enable element internals. Highly experimental. Not for use in production.
+   */
+  experimentalElementInternals?: boolean;
+
+  /**
    * Dispatches component lifecycle events. Mainly used for testing. Defaults to `false`.
    */
   lifecycleDOMEvents?: boolean;

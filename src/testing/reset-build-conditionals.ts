@@ -46,4 +46,5 @@ export function resetBuildConditionals(b: d.BuildConditionals) {
   b.scriptDataOpts = false;
   b.scopedSlotTextContentFix = false;
   b.slotChildNodesFix = false;
+  b.formAssociated = false;
 }

@@ -701,6 +701,12 @@ export const getComponentTagName = (staticMembers: ts.ClassElement[]): string | 
   return null;
 };
 
+export const getFormAssociated = (staticMembers: ts.ClassElement[]): boolean | null => {
+  const b = !!getStaticValue(staticMembers, 'formAssociated');
+  console.log(`retrieved fa value: ${b}`);
+  return b;
+};
+
 export const isStaticGetter = (member: ts.ClassElement): boolean => {
   const modifiers = retrieveTsModifiers(member);
   return (

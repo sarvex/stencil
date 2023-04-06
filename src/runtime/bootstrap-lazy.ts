@@ -96,6 +96,14 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
             // add the read-only property "shadowRoot" to the host element
             // adding the shadow root build conditionals to minimize runtime
             if (supportsShadow) {
+              if (BUILD.formAssociated && cmpMeta.$flags$ & CMP_FLAGS.formAssociated) {
+                console.log(`calling self.attachInternals(). nowhere to put it!`);
+                // self.attachInternals();
+              } else {
+                console.log(`BUILD.formAssociated ${BUILD.formAssociated}`);
+                console.log(`CMP_FLAGS.formAssociated ${CMP_FLAGS.formAssociated}`);
+              }
+
               if (BUILD.shadowDelegatesFocus) {
                 self.attachShadow({
                   mode: 'open',

@@ -5,7 +5,14 @@ import ts from 'typescript';
 import type * as d from '../../../declarations';
 import { addComponentMetaStatic } from '../add-component-meta-static';
 import { setComponentBuildConditionals } from '../component-build-conditionals';
-import { getComponentTagName, getStaticValue, isInternal, isStaticGetter, serializeSymbol } from '../transform-utils';
+import {
+  getComponentTagName,
+  getFormAssociated,
+  getStaticValue,
+  isInternal,
+  isStaticGetter,
+  serializeSymbol,
+} from '../transform-utils';
 import { parseCallExpression } from './call-expression';
 import { parseClassMethods } from './class-methods';
 import { parseStaticElementRef } from './element-ref';
@@ -54,6 +61,7 @@ export const parseStaticComponentMeta = (
   const docs = serializeSymbol(typeChecker, symbol);
   const isCollectionDependency = moduleFile.isCollectionDependency;
   const encapsulation = parseStaticEncapsulation(staticMembers);
+  const isFormAssociated = getFormAssociated(staticMembers);
 
   const cmp: d.ComponentCompilerMeta = {
     tagName: tagName,
@@ -132,6 +140,7 @@ export const parseStaticComponentMeta = (
     htmlParts: [],
     isUpdateable: false,
     potentialCmpRefs: [],
+    isFormAssociated,
   };
 
   const visitComponentChildNode = (node: ts.Node) => {

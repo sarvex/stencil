@@ -2,7 +2,7 @@ import { DEFAULT_STYLE_MODE } from '@utils';
 
 import type * as d from '../../declarations';
 
-export const setComponentBuildConditionals = (cmpMeta: d.ComponentCompilerMeta) => {
+export const setComponentBuildConditionals = (cmpMeta: d.ComponentCompilerMeta): void => {
   if (cmpMeta.properties.length > 0) {
     cmpMeta.hasProp = true;
     cmpMeta.hasPropMutable = cmpMeta.properties.some((p) => p.mutable);

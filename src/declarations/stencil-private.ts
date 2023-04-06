@@ -84,6 +84,7 @@ export interface BuildFeatures {
   shadowDom: boolean;
   shadowDelegatesFocus: boolean;
   scoped: boolean;
+  formAssociated: boolean;
 
   // render
   /**
@@ -788,6 +789,7 @@ export interface ComponentCompilerFeatures {
    */
   isPlain: boolean;
   potentialCmpRefs: string[];
+  isFormAssociated: boolean;
 }
 
 /** Must be serializable to JSON!! */

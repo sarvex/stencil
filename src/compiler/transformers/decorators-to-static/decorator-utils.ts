@@ -34,6 +34,9 @@ export const isDecoratorNamed = (propName: string) => {
   };
 };
 
+/**
+ *
+ */
 export interface GetDeclarationParameters {
   <T>(decorator: ts.Decorator): [T];
   <T, T1>(decorator: ts.Decorator): [T, T1];
