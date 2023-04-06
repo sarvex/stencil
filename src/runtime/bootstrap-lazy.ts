@@ -1,5 +1,5 @@
 import { BUILD } from '@app-data';
-import { doc, getHostRef, plt, registerHost, supportsShadow, win } from '@platform';
+import {doc, getHostRef, plt, registerHost, supportsElementInternals, supportsShadow, win} from '@platform';
 import { CMP_FLAGS, queryNonceMetaTagContent } from '@utils';
 
 import type * as d from '../declarations';
@@ -97,8 +97,11 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
             // adding the shadow root build conditionals to minimize runtime
             if (supportsShadow) {
               if (BUILD.formAssociated && cmpMeta.$flags$ & CMP_FLAGS.formAssociated) {
-                console.log(`calling self.attachInternals(). nowhere to put it!`);
-                // self.attachInternals();
+                console.log(`in the area`)
+                if (supportsElementInternals) {
+                  console.log(`calling self.attachInternals(). nowhere to put it!`);
+                  self.attachInternals();
+                }
               } else {
                 console.log(`BUILD.formAssociated ${BUILD.formAssociated}`);
                 console.log(`CMP_FLAGS.formAssociated ${CMP_FLAGS.formAssociated}`);

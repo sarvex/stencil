@@ -119,6 +119,7 @@ export const setPlatformHelpers = (helpers: {
 };
 
 export const supportsShadow = false;
+export const supportsElementInternals = false;
 
 export const supportsListenerOptions = false;
 

@@ -5,6 +5,7 @@ import { flushAll, resetTaskQueue } from './testing-task-queue';
 import { win } from './testing-window';
 
 export let supportsShadow = true;
+export let supportsElementInternals = true;
 
 export const plt: d.PlatformRuntime = {
   $flags$: 0,
@@ -34,6 +35,10 @@ export const Context: any = {};
 
 export const setSupportsShadowDom = (supports: boolean) => {
   supportsShadow = supports;
+};
+
+export const setSupportsElementInternals  = (supports: boolean) => {
+  supportsElementInternals = supports;
 };
 
 export function resetPlatform(defaults: Partial<d.PlatformRuntime> = {}) {

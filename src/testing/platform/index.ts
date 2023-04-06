@@ -12,11 +12,13 @@ export {
   resetPlatform,
   setPlatformHelpers,
   setSupportsShadowDom,
+  setSupportsElementInternals,
   startAutoApplyChanges,
   stopAutoApplyChanges,
   supportsConstructableStylesheets,
   supportsListenerOptions,
   supportsShadow,
+  supportsElementInternals,
 } from './testing-platform';
 export { flushAll, flushLoadModule, flushQueue, loadModule, nextTick, readTask, writeTask } from './testing-task-queue';
 export { doc, win } from './testing-window';
