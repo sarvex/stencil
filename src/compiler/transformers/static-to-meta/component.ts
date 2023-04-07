@@ -140,6 +140,7 @@ export const parseStaticComponentMeta = (
     htmlParts: [],
     isUpdateable: false,
     potentialCmpRefs: [],
+    // TODO(): Being form associated !== having internals
     isFormAssociated,
   };
 
