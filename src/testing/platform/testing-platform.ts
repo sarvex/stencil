@@ -5,7 +5,8 @@ import { flushAll, resetTaskQueue } from './testing-task-queue';
 import { win } from './testing-window';
 
 export let supportsShadow = true;
-export let supportsElementInternals = true;
+// TODO(): Fix
+export let supportsElementInternals = false;
 
 export const plt: d.PlatformRuntime = {
   $flags$: 0,
