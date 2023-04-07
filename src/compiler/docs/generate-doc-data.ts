@@ -1,4 +1,4 @@
-import { flatOne, normalizePath, sortBy, unique } from '@utils';
+import { flatOne, isOutputTargetDocsJson, normalizePath, sortBy, unique } from '@utils';
 import { basename, dirname, join, relative } from 'path';
 
 import { addFileToLibrary, getTypeLibrary } from '../../compiler/transformers/type-library';
@@ -6,7 +6,6 @@ import type * as d from '../../declarations';
 import { JsonDocsValue } from '../../declarations';
 import { typescriptVersion, version } from '../../version';
 import { getBuildTimestamp } from '../build/build-ctx';
-import { isOutputTargetDocsJson } from '../output-targets/output-utils';
 import { AUTO_GENERATE_COMMENT } from './constants';
 
 /**
