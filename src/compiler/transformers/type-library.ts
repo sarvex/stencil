@@ -2,7 +2,6 @@ import path from 'path';
 import ts from 'typescript';
 
 import type * as d from '../../declarations';
-import {resolveType} from './transform-utils';
 
 /**
  * This is a {@link d.JsonDocsTypeLibrary} cache which is used to store a
@@ -67,8 +66,14 @@ export function getTypeLibrary(): d.JsonDocsTypeLibrary {
  * @param filePath the path to the file of interest
  */
 export function addFileToLibrary(filePath: string): void {
-  const program = ts.createProgram([filePath], {});
+  const options = {
+    ...ts.getDefaultCompilerOptions(),
+    module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+  };
+  const program = ts.createProgram([filePath], options);
   const checker = program.getTypeChecker();
+  const compilerHost = ts.createCompilerHost(options);
 
   const sourceFile = program.getSourceFile(filePath);
 
@@ -86,30 +91,51 @@ export function addFileToLibrary(filePath: string): void {
         addToLibrary(type, typeName, checker);
       }
     } else if (ts.isExportDeclaration(node)) {
+      if (!ts.isStringLiteral(node.moduleSpecifier)) {
+        return;
+      }
+
+      const importPath = node.moduleSpecifier.text;
+      const module = ts.resolveModuleName(importPath, sourceFile.fileName, options, compilerHost);
+      const exportHomeModule = program.getSourceFile(module.resolvedModule.resolvedFileName);
+
       // if there are named exports (like `export { Pie, Cake } from './dessert'`)
       // we get each export specifier (`Pie`, `Cake`), use the typechecker
       // to get it's type, figure out the name, and so on.
-      if (ts.isNamedExports(node.exportClause)) {
+      if (node.exportClause && ts.isNamedExports(node.exportClause)) {
         node.exportClause.elements.forEach((exportSpecifier) => {
-          const type = checker.getTypeAtLocation(exportSpecifier);
-          const name = exportSpecifier.name.getText();
-          console.log('oh no! its a ', name);
-          console.log(resolveType(checker, type));
+          // trust me
+          const identifier = exportSpecifier.getChildAt(0);
+          // if this symbol is being aliased like
+          //
+          // ```ts
+          // export { Best as Worst } from './huh';
+          // ```
+          //
+          // this will give us 'Best' as a symbol, letting us look that name up
+          // in the source module, below
+          const unaliasedSymbol = unalias(checker.getSymbolAtLocation(identifier), checker);
+          const name = unaliasedSymbol.getName();
 
-          addToLibrary(type, name, checker);
+          ts.forEachChild(exportHomeModule, (child) => {
+            if (isTypeDeclLike(child) && child.name.getText() === name) {
+              const type = checker.getTypeAtLocation(child);
+              addToLibrary(type, name, checker);
+            }
+          });
         });
       } else {
-        // if it's _not_ a named export clause then it's something like
-        // `export * from 'foo'`, so we need to deal with all the symbols
-        // exports from that module.
-        checker.getExportsOfModule(checker.getSymbolAtLocation(node.moduleSpecifier)).forEach((exportedSymbol) => {
-          const type = checker.getTypeAtLocation(exportedSymbol.valueDeclaration);
-          const name = exportedSymbol.name;
-          addToLibrary(type, name, checker);
-        });
+        // if it's _not_ a named export clause then it's something like `export
+        // * from 'foo'`, so we need to deal with all the symbols exported from
+        // that module. Conveniently, this very function does that!
+        addFileToLibrary(exportHomeModule.fileName);
       }
     }
   });
+}
+
+function unalias(symbol: ts.Symbol, checker: ts.TypeChecker): ts.Symbol {
+  return symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
 }
 
 /**
