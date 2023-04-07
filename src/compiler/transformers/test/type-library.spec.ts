@@ -50,8 +50,5 @@ describe('type library', () => {
     resetLibrary();
   });
 
-  it('should be able to add a type to the library', () => {
-    // create a typescript Type node called Pie using ts.factory methods which is exported from a SourceFile
-    // at path src/dessert.ts
-  });
+  it('should be able to add a type to the library', () => {});
 });
