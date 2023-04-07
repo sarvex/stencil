@@ -148,6 +148,15 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
         }
       };
 
+      if (BUILD.formAssociated && cmpMeta.$flags$ & CMP_FLAGS.formAssociated) {
+        if (supportsElementInternals) {
+          Object.defineProperty(HostElement, 'formAssociated', {
+            writable: false,
+            value: true
+          })
+        }
+      }
+
       if (BUILD.cloneNodeFix) {
         patchCloneNode(HostElement.prototype);
       }
