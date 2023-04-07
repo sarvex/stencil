@@ -152,8 +152,8 @@ export const bootstrapLazy = (lazyBundles: d.LazyBundlesRuntimeData, options: d.
         if (supportsElementInternals) {
           Object.defineProperty(HostElement, 'formAssociated', {
             writable: false,
-            value: true
-          })
+            value: true,
+          });
         }
       }
 
