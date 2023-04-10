@@ -1,0 +1,41 @@
+{
+  "timestamp": "2023-04-10T19:52:56",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "3.2.1-dev.1681154823.f793fab",
+    "typescriptVersion": "4.9.5"
+  },
+  "components": [
+    {
+      "filePath": "./src/components/my-component/my-component.tsx",
+      "encapsulation": "shadow",
+      "tag": "my-component",
+      "readme": "# my-component\n\n\n",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [],
+      "methods": [
+        {
+          "name": "onDidDismiss",
+          "returns": {
+            "type": "Promise<ImportedInterface<T>>",
+            "docs": ""
+          },
+          "signature": "onDidDismiss<T = any>() => Promise<ImportedInterface<T>>",
+          "parameters": [],
+          "docs": "Returns a promise that resolves when the toast did dismiss.",
+          "docsTags": []
+        }
+      ],
+      "events": [],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ]
+}
