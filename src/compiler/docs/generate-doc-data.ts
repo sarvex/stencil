@@ -27,8 +27,8 @@ export const generateDocData = async (
 
   if (supplementalPublicTypes !== '') {
     // if supplementalPublicTypes is set then we want to add all the public
-    // types in that file to the type library so that specific output targets
-    // can make use of that data later.
+    // types in that file to the type library so that output targets producing
+    // documentation can make use of that data later.
     addFileToLibrary(supplementalPublicTypes);
   }
 
