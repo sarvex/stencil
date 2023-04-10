@@ -19,7 +19,7 @@ async function setup() {
   const compilerContext: CompilerCtx = mockCompilerCtx();
   // TODO need the config or no?
   const config = mockValidatedConfig({
-    rootDir: path.resolve("."),
+    rootDir: path.resolve('.'),
   });
 
   patchTypescript(config, compilerContext.fs);
@@ -48,7 +48,7 @@ async function setup() {
 
     function eat(pie: Pie) {
       console.log('I ate it');
-    }`,
+    }`
   );
 
   const options = {
@@ -59,11 +59,15 @@ async function setup() {
     baseUrl: '.',
   };
 
-  const program = ts.createProgram(['src/meal.ts'], {
-    ...options,
-  }, ts.createCompilerHost(options));
+  const program = ts.createProgram(
+    ['src/meal.ts'],
+    {
+      ...options,
+    },
+    ts.createCompilerHost(options)
+  );
 
-  console.log('SOURCE FILES::', program.getSourceFiles().length)
+  console.log('SOURCE FILES::', program.getSourceFiles().length);
 
   const checker = program.getTypeChecker();
   const mealModule = program.getSourceFile(mealModulePath);

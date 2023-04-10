@@ -1,5 +1,5 @@
 import { Component, h, Method } from '@stencil/core';
-import {importedInterface, ImportedInterface} from './imported-interface';
+import { importedInterface, ImportedInterface } from './imported-interface';
 
 @Component({
   tag: 'my-component',
@@ -11,11 +11,11 @@ export class MyComponent {
    * Returns a promise that resolves when the toast did dismiss.
    */
   @Method()
-  onDidDismiss<T = any>(): Promise<ImportedInterface<T>> {
-    return importedInterface();
+  onDidDismiss<T>(arg: T): Promise<ImportedInterface<T>> {
+    return importedInterface(arg);
   }
 
   render() {
-    return <div>Hello, World! I'm a mess</div>
+    return <div>Hello, World! I'm a mess</div>;
   }
 }

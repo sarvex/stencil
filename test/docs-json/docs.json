@@ -1,8 +1,8 @@
 {
-  "timestamp": "2023-04-10T19:52:56",
+  "timestamp": "2023-04-10T20:17:44",
   "compiler": {
     "name": "@stencil/core",
-    "version": "3.2.1-dev.1681154823.f793fab",
+    "version": "3.2.1-dev.1681157563.17e0b8a",
     "typescriptVersion": "4.9.5"
   },
   "components": [
@@ -22,7 +22,32 @@
             "type": "Promise<ImportedInterface<T>>",
             "docs": ""
           },
-          "signature": "onDidDismiss<T = any>() => Promise<ImportedInterface<T>>",
+          "complexType": {
+            "signature": "<T>(arg: T) => Promise<ImportedInterface<T>>",
+            "parameters": [
+              {
+                "tags": [],
+                "text": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "../../compiler/lib.es5.d.ts::Promise"
+              },
+              "ImportedInterface": {
+                "location": "import",
+                "path": "./imported-interface",
+                "id": "src/components/my-component/imported-interface.ts::ImportedInterface"
+              },
+              "T": {
+                "location": "global",
+                "id": "src/components/my-component/my-component.tsx::T"
+              }
+            },
+            "return": "Promise<ImportedInterface<T>>"
+          },
+          "signature": "onDidDismiss<T>(arg: T) => Promise<ImportedInterface<T>>",
           "parameters": [],
           "docs": "Returns a promise that resolves when the toast did dismiss.",
           "docsTags": []
@@ -37,5 +62,42 @@
       "dependencies": [],
       "dependencyGraph": {}
     }
-  ]
+  ],
+  "typeLibrary": {
+    "../../compiler/lib.es5.d.ts::Promise": {
+      "declaration": "interface Promise<T> {\r\n    /**\r\n     * Attaches callbacks for the resolution and/or rejection of the Promise.\r\n     * @param onfulfilled The callback to execute when the Promise is resolved.\r\n     * @param onrejected The callback to execute when the Promise is rejected.\r\n     * @returns A Promise for the completion of which ever callback is executed.\r\n     */\r\n    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;\r\n\r\n    /**\r\n     * Attaches a callback for only the rejection of the Promise.\r\n     * @param onrejected The callback to execute when the Promise is rejected.\r\n     * @returns A Promise for the completion of the callback.\r\n     */\r\n    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;\r\n}",
+      "docstring": "Represents the completion of an asynchronous operation",
+      "path": "../../compiler/lib.es5.d.ts"
+    },
+    "src/components/my-component/imported-interface.ts::ImportedInterface": {
+      "declaration": "export interface ImportedInterface<T> {\n  test: 'boop';\n  another: T;\n}",
+      "docstring": "Some JSDoc here describing something or other\n\nIt's multi-line, etc.",
+      "path": "src/components/my-component/imported-interface.ts"
+    },
+    "src/components/interface-test.ts::Pie": {
+      "declaration": "export interface Pie {\n  type: 'pumpkin' | 'apple' | 'pecan';\n  name: string;\n  diameter: number;\n}",
+      "docstring": "",
+      "path": "src/components/interface-test.ts"
+    },
+    "src/components/interface-test.ts::FooBar": {
+      "declaration": "{\n  biz: string;\n}",
+      "docstring": "",
+      "path": "src/components/interface-test.ts"
+    },
+    "src/components/interface-test.ts::FizzBuzz": {
+      "declaration": "export enum FizzBuzz {\n  One,\n  Two,\n}",
+      "docstring": "",
+      "path": "src/components/interface-test.ts"
+    },
+    "src/components/test-not-used.ts::NotUsedInterface": {
+      "declaration": "export interface NotUsedInterface {\n  test: string;\n}",
+      "docstring": "",
+      "path": "src/components/test-not-used.ts"
+    },
+    "src/components/test-not-used.ts::AnotherInterface": {
+      "declaration": "export interface AnotherInterface {\n  test: string;\n}",
+      "docstring": "",
+      "path": "src/components/test-not-used.ts"
+    }
+  }
 }

@@ -4,11 +4,13 @@
  * It's multi-line, etc.
  */
 export interface ImportedInterface<T> {
-  test: "boop"
+  test: 'boop';
+  another: T;
 }
 
-export async function importedInterface<T>(): Promise<ImportedInterface<T>> {
+export async function importedInterface<T>(foo: T): Promise<ImportedInterface<T>> {
   return {
-    test: "boop"
-  }
+    test: 'boop',
+    another: foo,
+  };
 }

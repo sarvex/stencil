@@ -414,7 +414,7 @@ interface TypeReferenceIR {
  * @param node the node to walk to retrieve type information
  * @returns the collected type references
  */
-const getAllTypeReferences = (checker: ts.TypeChecker, node: ts.Node): ReadonlyArray<TypeReferenceIR> => {
+export const getAllTypeReferences = (checker: ts.TypeChecker, node: ts.Node): ReadonlyArray<TypeReferenceIR> => {
   const referencedTypes: TypeReferenceIR[] = [];
 
   const visit = (node: ts.Node): ts.VisitResult<ts.Node> => {

@@ -4,16 +4,14 @@ export interface Pie {
   diameter: number;
 }
 
-export type Foo = string;
-
 export type FooBar = {
-    biz: string
-}
+  biz: string;
+};
 
 export enum FizzBuzz {
-    One,
-    Two
+  One,
+  Two,
 }
 
-// export type { NotUsedInterface as BestInterface } from './test-not-used'
+export type { NotUsedInterface as BestInterface } from './test-not-used';
 export * from './test-not-used';

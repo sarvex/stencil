@@ -12,7 +12,7 @@ export namespace Components {
         /**
           * Returns a promise that resolves when the toast did dismiss.
          */
-        "onDidDismiss": <T = any>() => Promise<ImportedInterface<T>>;
+        "onDidDismiss": <T>(arg: T) => Promise<ImportedInterface<T>>;
     }
 }
 declare global {
