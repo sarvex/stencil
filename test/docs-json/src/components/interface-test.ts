@@ -11,6 +11,7 @@ export type FooBar = {
 export enum FizzBuzz {
   One,
   Two,
+  Three,
 }
 
 export type { NotUsedInterface as BestInterface } from './test-not-used';
