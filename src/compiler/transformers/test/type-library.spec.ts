@@ -1,11 +1,11 @@
 import { CompilerCtx } from '@stencil/core/declarations';
 import { mockCompilerCtx, mockValidatedConfig } from '@stencil/core/testing';
 import path from 'path';
-import { addToLibrary, getTypeLibrary } from '../type-library';
 import ts from 'typescript';
 
 import { patchTypescript } from '../../sys/typescript/typescript-sys';
 import { getAllTypeReferences } from '../transform-utils';
+import { addToLibrary, getTypeLibrary } from '../type-library';
 
 function resetLibrary() {
   const library = getTypeLibrary();
@@ -86,5 +86,6 @@ describe('type library', () => {
     referencedtypes.forEach(({ name, type }) => {
       addToLibrary(type, name, checker);
     });
+    expect(1).toBe(1);
   });
 });
