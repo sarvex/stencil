@@ -79,7 +79,7 @@
       "path": "src/components/interface-test.ts"
     },
     "src/components/interface-test.ts::FizzBuzz": {
-      "declaration": "export enum FizzBuzz {\n  One,\n  Two,\n}",
+      "declaration": "export enum FizzBuzz {\n  One,\n  Two,\n  Three,\n}",
       "docstring": "",
       "path": "src/components/interface-test.ts"
     },
