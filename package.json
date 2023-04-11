@@ -42,7 +42,7 @@
     "test.analysis": "cd test && npm ci && npm run analysis.build-and-analyze",
     "test.bundlers": "cd test && npm run bundlers",
     "test.dist": "node scripts/build --validate-build",
-    "test.end-to-end": "cd test/end-to-end && npm ci && npm test && npm run test.dist",
+    "test.end-to-end": "cd test/end-to-end && npm i && npm test && npm run test.dist",
     "test.jest": "jest",
     "test.karma": "cd test/karma && npm ci && npm run karma",
     "test.karma.prod": "cd test/karma && npm ci && npm run karma.prod",
