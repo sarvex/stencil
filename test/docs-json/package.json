@@ -6,7 +6,8 @@
     "dist/"
   ],
   "scripts": {
-    "build": "node ../../bin/stencil build --debug",
+    "build": "node ../../bin/stencil build --debug && npm run postprocess",
+    "postprocess": "node scripts/postprocess.js",
     "build.dev": "node ../../bin/stencil build --dev",
     "start": "node ../../bin/stencil build --dev --watch --serve",
     "test": "node ../../bin/stencil test --spec --e2e",
