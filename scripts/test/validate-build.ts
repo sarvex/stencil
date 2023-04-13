@@ -337,7 +337,9 @@ async function validateModuleTreeshake(opts: BuildOptions, moduleName: string, e
 
   const bundle = await rollup({
     input: virtualInputId,
-    treeshake: true,
+    treeshake: {
+      moduleSideEffects: false,
+    },
     plugins: [
       {
         name: 'stencilResolver',
