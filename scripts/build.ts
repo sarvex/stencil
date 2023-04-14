@@ -14,6 +14,7 @@ import { createLicense } from './license';
 import { release } from './release';
 import { validateBuild } from './test/validate-build';
 import { BuildOptions } from './utils/options';
+import { utils } from './bundles/utils';
 
 /**
  * Runner for releasing a new version of Stencil
@@ -66,6 +67,7 @@ export async function createBuild(opts: BuildOptions): Promise<readonly RollupOp
     screenshot(opts),
     testing(opts),
     sysNode(opts),
+    utils(opts),
   ]);
 
   return bundles.flat();
