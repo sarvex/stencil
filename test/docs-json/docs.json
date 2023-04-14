@@ -68,20 +68,20 @@
       "docstring": "Some JSDoc here describing something or other\n\nIt's multi-line, etc.",
       "path": "src/components/my-component/imported-interface.ts"
     },
-    "src/components/interface-test.ts::Pie": {
+    "src/components/interfaces.ts::Pie": {
       "declaration": "export interface Pie {\n  type: 'pumpkin' | 'apple' | 'pecan';\n  name: string;\n  diameter: number;\n}",
       "docstring": "",
-      "path": "src/components/interface-test.ts"
+      "path": "src/components/interfaces.ts"
     },
-    "src/components/interface-test.ts::FooBar": {
+    "src/components/interfaces.ts::FooBar": {
       "declaration": "{\n  biz: string;\n}",
       "docstring": "",
-      "path": "src/components/interface-test.ts"
+      "path": "src/components/interfaces.ts"
     },
-    "src/components/interface-test.ts::FizzBuzz": {
+    "src/components/interfaces.ts::FizzBuzz": {
       "declaration": "export enum FizzBuzz {\n  One,\n  Two,\n  Three,\n}",
       "docstring": "",
-      "path": "src/components/interface-test.ts"
+      "path": "src/components/interfaces.ts"
     },
     "src/components/test-not-used.ts::NotUsedInterface": {
       "declaration": "export interface NotUsedInterface {\n  test: string;\n}",

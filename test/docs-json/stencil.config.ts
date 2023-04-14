@@ -6,7 +6,7 @@ export const config: Config = {
     {
       type: 'docs-json',
       file: 'docs.json',
-      supplementalPublicTypes: 'src/components/interface-test.ts',
+      supplementalPublicTypes: 'src/components/interfaces.ts',
     },
   ],
 };
