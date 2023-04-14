@@ -10,11 +10,11 @@ import { mockDoc } from './bundles/mock-doc';
 import { screenshot } from './bundles/screenshot';
 import { sysNode, sysNodeExternalBundles } from './bundles/sys-node';
 import { testing } from './bundles/testing';
+import { utils } from './bundles/utils';
 import { createLicense } from './license';
 import { release } from './release';
 import { validateBuild } from './test/validate-build';
 import { BuildOptions } from './utils/options';
-import { utils } from './bundles/utils';
 
 /**
  * Runner for releasing a new version of Stencil

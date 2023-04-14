@@ -1,4 +1,4 @@
-import { byteSize, isOutputTargetStats, sortBy, result } from '@utils';
+import { byteSize, isOutputTargetStats, result, sortBy } from '@utils';
 
 import type * as d from '../../declarations';
 
