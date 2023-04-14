@@ -3,7 +3,6 @@ import { importedInterface, ImportedInterface } from './imported-interface';
 
 @Component({
   tag: 'my-component',
-  styleUrl: 'my-component.css',
   shadow: true,
 })
 export class MyComponent {
@@ -16,6 +15,6 @@ export class MyComponent {
   }
 
   render() {
-    return <div>Hello, World! I'm a mess</div>;
+    return <div>Hello, World! I'm a mess 🫠</div>;
   }
 }
