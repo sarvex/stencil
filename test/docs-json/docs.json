@@ -70,7 +70,7 @@
     },
     "src/components/interfaces.ts::Pie": {
       "declaration": "export interface Pie {\n  type: 'pumpkin' | 'apple' | 'pecan';\n  name: string;\n  diameter: number;\n}",
-      "docstring": "",
+      "docstring": "Interface that should be included",
       "path": "src/components/interfaces.ts"
     },
     "src/components/interfaces.ts::FooBar": {
@@ -80,17 +80,32 @@
     },
     "src/components/interfaces.ts::FizzBuzz": {
       "declaration": "export enum FizzBuzz {\n  One,\n  Two,\n  Three,\n}",
-      "docstring": "",
+      "docstring": "Enum that should be included",
       "path": "src/components/interfaces.ts"
     },
-    "src/components/test-not-used.ts::NotUsedInterface": {
-      "declaration": "export interface NotUsedInterface {\n  test: string;\n}",
-      "docstring": "",
+    "src/components/test-not-used.ts::ReExportedUnderNewNameWithType": {
+      "declaration": "export interface ReExportedUnderNewNameWithType {\n  test: string;\n}",
+      "docstring": "If I show up then a re-export w/ alias and `export type` works!",
       "path": "src/components/test-not-used.ts"
     },
-    "src/components/test-not-used.ts::AnotherInterface": {
-      "declaration": "export interface AnotherInterface {\n  test: string;\n}",
-      "docstring": "",
+    "src/components/test-not-used.ts::ReExportedUnderNewName": {
+      "declaration": "export interface ReExportedUnderNewName {\n  test: string;\n}",
+      "docstring": "If I show up then a re-export w/ alias works!",
+      "path": "src/components/test-not-used.ts"
+    },
+    "src/components/test-not-used.ts::ReExportedWithType": {
+      "declaration": "export interface ReExportedWithType {\n  test: string;\n}",
+      "docstring": "If I show up then a re-export w/ `export type` works!",
+      "path": "src/components/test-not-used.ts"
+    },
+    "src/components/test-not-used.ts::ReExported": {
+      "declaration": "export interface ReExported {\n  test: string;\n}",
+      "docstring": "If I show up then a re-export works!",
+      "path": "src/components/test-not-used.ts"
+    },
+    "src/components/test-not-used.ts::IncludedInWildcard": {
+      "declaration": "export interface IncludedInWildcard {\n  test: string;\n}",
+      "docstring": "If I show up then a `export * from '...'` works!",
       "path": "src/components/test-not-used.ts"
     }
   }
