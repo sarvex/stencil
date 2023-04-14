@@ -7,7 +7,7 @@ import { importedInterface, ImportedInterface } from './imported-interface';
 })
 export class MyComponent {
   /**
-   * Returns a promise that resolves when the toast did dismiss.
+   * A comment, which should be included, I should think!
    */
   @Method()
   onDidDismiss<T>(arg: T): Promise<ImportedInterface<T>> {
