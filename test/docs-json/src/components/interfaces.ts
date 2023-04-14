@@ -8,7 +8,7 @@ export interface Pie {
 }
 
 /**
-  * Type that should be included
+ * Type that should be included
  *
  */
 export type FooBar = {
