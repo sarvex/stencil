@@ -16,4 +16,3 @@ export * from './sourcemaps';
 export * from './url-paths';
 export * from './util';
 export * from './validation';
-// export type Result from './result';

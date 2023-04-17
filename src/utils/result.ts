@@ -1,23 +1,25 @@
 /**
- * A Result wraps up a success state and a failure state, allowing you
- * to return a single type from a function and discriminate between the two possible states in a principled way.
+ * A Result wraps up a success state and a failure state, allowing you to
+ * return a single type from a function and discriminate between the two
+ * possible states in a principled way.
  *
  * Using it could look something like this:
  *
  * ```ts
  * import { result } from '@utils';
  *
- * const mightFail = (input: ): Result<number, string> => {
- * try {
- *   let value: number = calculateSomethingWithInput(input);
- *   return result.ok(value);
- * } catch (e) {
- *   return result.err(e.message);
+ * const mightFail = (input: number): Result<number, string> => {
+ *   try {
+ *     let value: number = calculateSomethingWithInput(input);
+ *     return result.ok(value);
+ *   } catch (e) {
+ *     return result.err(e.message);
+ *   }
  * }
  *
- * result.map(mightFail, (sum: number) => {
- *   console.log('the sum was: ', sum);
- * })
+ * const sumResult = mightFail(2);
+ *
+ * const msg = result.map(sumResult, (sum: number) => `the sum was: ${sum}`);
  * ```
  *
  * A few utility methods are defined in this module, like `map` and `unwrap`,
@@ -81,14 +83,14 @@ export const err = <T>(value: T): Err<T> => ({
  * ```ts
  * import { result } from "@utils";
  *
- * const myResult: Result<number, string> = result.ok("monads???");
+ * const myResult: Result<string, string> = result.ok("monads???");
  * const updatedResult = result.map(myResult, wrappedString => (
  *   wrappedString.split("").length
  * ));
  * ```
  *
  * after the `result.map` call the type of `updatedResult` will now be
- * `Result<string, string>`.
+ * `Result<number, string>`.
  *
  * If it's `Err`, just return the same value.
  *
@@ -117,6 +119,7 @@ export function map<T1, T2, E>(
 
   if (result.isErr) {
     // unwrapping the error is necessary here for typechecking
+    // but you and I both know its type hasn't changed a bit!
     const value = result.value;
     return err(value);
   }
@@ -125,7 +128,8 @@ export function map<T1, T2, E>(
 }
 
 /**
- * Unwrap a {@link Result}, return the value inside if it is an `Ok` and throwing with the wrapped value if it is an `Err`.
+ * Unwrap a {@link Result}, return the value inside if it is an `Ok` and
+ * throw with the wrapped value if it is an `Err`.
  *
  * @param result a result to peer inside of
  * @returns the wrapped value, if `Ok`
