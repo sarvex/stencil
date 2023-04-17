@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import { join } from 'path';
+import { join, relative } from 'path';
 
 import { bundleDts } from '../utils/bundle-dts';
 import { BuildOptions } from '../utils/options';
@@ -15,41 +15,36 @@ import { BuildOptions } from '../utils/options';
 export async function utils(opts: BuildOptions) {
   await createUtilDtsBundle(opts);
 
-  // dummy return to agree with types of other bundles
+  // dummy return to agree with type of other bundles
   return [];
 }
 
 async function createUtilDtsBundle(opts: BuildOptions) {
-  // const utilDtsPath = join(opts.buildDir, 'utils', 'index.d.ts');
-  // const dtsContent = await bundleDts(opts, utilDtsPath);
-
-  // // the path where we'll write hte bundled `.d.ts` file
-  // const outputPath = join(opts.output.internalDir, 'utils.d.ts');
-
-  // await fs.writeFile(outputPath, dtsContent);
-
-
   const utilsPath = join(opts.buildDir, 'utils');
 
-  const outputDirectory = join(opts.output.internalDir, 'utils');
+  const copyUtilsDtsFiles = async (utilsPath: string) => {
+    const files = await fs.readdir(join(opts.buildDir, utilsPath));
 
-  // create the directory if it doesn't exist
-  await fs.ensureDir(outputDirectory);
+    const outputDirPath = join(opts.output.internalDir, utilsPath);
+    await fs.ensureDir(outputDirPath);
 
-  // recursively copy all `.d.ts` files found in `utilsPath` and its
-// subdirectories to a new directory found at `outputDirectory`, creating
-// subdirectories as needed
-console.log(`going to copy everything I can from ${utilsPath} to ${outputDirectory}`);
-  await fs.copy(utilsPath, outputDirectory, {
-    filter: (src) => (
-      !src.endsWith('.js')
-    ),
-    recursive: true,
-  });
+    await Promise.all(
+      files.map(async (fileName: string) => {
+        const inputFilePath = join(opts.buildDir, utilsPath, fileName);
+        const stat = await fs.stat(inputFilePath);
 
-  // gah why is copying files hard
-  //
-  // ok so here I need to copy all the `.d.ts` files in `build/utils` (and
-  // subdirectories) to `internal/utils`. Then `../declarations` in  all of
-  // them needs to be rewritten to `..`
+        if (stat.isFile() && inputFilePath.endsWith('.d.ts')) {
+          const buffer = await fs.readFile(inputFilePath);
+          const contents = String(buffer).replace('/declarations', '');
+          const outputFilePath = join(opts.output.internalDir, utilsPath, fileName);
+          await fs.writeFile(outputFilePath, contents);
+        } else if (stat.isDirectory()) {
+          // its a directory, recur!
+          await copyUtilsDtsFiles(join(utilsPath, fileName));
+        }
+      })
+    );
+  };
+
+  await copyUtilsDtsFiles('utils');
 }
