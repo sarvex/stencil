@@ -131,11 +131,28 @@ export function map<T1, T2, E>(
  * Unwrap a {@link Result}, return the value inside if it is an `Ok` and
  * throw with the wrapped value if it is an `Err`.
  *
+ * @throws with the wrapped value if it is an `Err`.
  * @param result a result to peer inside of
  * @returns the wrapped value, if `Ok`
  */
 export const unwrap = <T, E>(result: Result<T, E>): T => {
   if (result.isOk) {
+    return result.value;
+  } else {
+    throw result.value;
+  }
+};
+
+/**
+ * Unwrap a {@link Result}, return the value inside if it is an `Err` and
+ * throw with the wrapped value if it is an `Ok`.
+ *
+ * @throws with the wrapped value if it is an `Ok`.
+ * @param result a result to peer inside of
+ * @returns the wrapped value, if `Err`
+ */
+export const unwrapErr = <T, E>(result: Result<T, E>): E => {
+  if (result.isErr) {
     return result.value;
   } else {
     throw result.value;

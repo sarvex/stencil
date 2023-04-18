@@ -59,9 +59,9 @@ describe('generateBuildStats', () => {
       lines: [],
     };
     buildCtx.buildResults.diagnostics = [diagnostic];
-    const result = generateBuildStats(config, buildCtx);
+    const diagnostics = result.unwrapErr(generateBuildStats(config, buildCtx));
 
-    expect(result).toStrictEqual({
+    expect(diagnostics).toStrictEqual({
       diagnostics: [diagnostic],
     });
   });
